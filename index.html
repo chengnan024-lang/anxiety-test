@@ -4,87 +4,352 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>恋爱依恋类型测试 | 你属于哪种依恋风格？</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 15px; }
-        .container { background: white; border-radius: 20px; padding: 30px 20px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); position: relative; }
-        h1 { color: #333; font-size: 24px; margin-bottom: 10px; }
-        h2 { color: #333; font-size: 18px; margin-bottom: 15px; }
-        .subtitle { color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
-        .tag { display: inline-block; background: linear-gradient(135deg, #ff6b6b 0%, #ffa07a 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; margin-bottom: 15px; }
+        body { 
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #FFE5E5 0%, #FFF5F5 50%, #FFF0F5 100%); 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
+            background-attachment: fixed;
+        }
         
-        .btn { background: linear-gradient(135deg, #ff6b6b 0%, #ffa07a 100%); color: white; border: none; padding: 16px 24px; font-size: 15px; border-radius: 50px; cursor: pointer; transition: all 0.3s; width: 100%; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; }
-        .btn:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(255,107,107,0.4); }
-        .btn-right { font-size: 13px; opacity: 0.8; }
-        .btn-title { font-weight: bold; font-size: 16px; }
-        .btn-desc { font-size: 12px; opacity: 0.8; display: block; margin-top: 4px; }
-        .btn-premium { background: linear-gradient(135deg, #ffa07a 0%, #ff6b6b 100%); }
+        .container { 
+            background: rgba(255, 255, 255, 0.95); 
+            border-radius: 24px; 
+            padding: 40px 28px; 
+            max-width: 420px; 
+            width: 100%; 
+            text-align: center; 
+            box-shadow: 0 8px 32px rgba(255, 105, 135, 0.15); 
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
         
-        .tip { color: #999; font-size: 12px; margin-top: 20px; }
+        h1 { 
+            color: #1a1a1a; 
+            font-size: 26px; 
+            font-weight: 700; 
+            margin-bottom: 8px; 
+            letter-spacing: -0.5px;
+        }
         
-        .question { display: none; text-align: left; }
+        .subtitle { 
+            color: #666; 
+            font-size: 14px; 
+            margin-bottom: 28px; 
+            line-height: 1.6; 
+        }
+        
+        .tag { 
+            display: inline-block; 
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%); 
+            color: white; 
+            padding: 8px 20px; 
+            border-radius: 20px; 
+            font-size: 12px; 
+            margin-bottom: 24px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn { 
+            background: white; 
+            color: #1a1a1a; 
+            border: 2px solid #f0f0f0; 
+            padding: 18px 24px; 
+            font-size: 15px; 
+            border-radius: 16px; 
+            cursor: pointer; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            width: 100%; 
+            margin-bottom: 14px; 
+            text-align: left; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+        }
+        
+        .btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.2);
+            border-color: #FF6B6B;
+        }
+        
+        .btn-right { 
+            font-size: 14px; 
+            font-weight: 600;
+            color: #FF6B6B;
+        }
+        
+        .btn-title { 
+            font-weight: 600; 
+            font-size: 16px; 
+            color: #1a1a1a;
+        }
+        
+        .btn-desc { 
+            font-size: 12px; 
+            color: #999; 
+            display: block; 
+            margin-top: 4px; 
+        }
+        
+        .btn-premium { 
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%); 
+            color: white; 
+            border: none;
+        }
+        
+        .btn-premium:hover {
+            border-color: transparent;
+        }
+        
+        .btn-premium .btn-title { color: white; }
+        .btn-premium .btn-desc { color: rgba(255,255,255,0.8); }
+        .btn-premium .btn-right { color: white; }
+        
+        .tip { color: #999; font-size: 12px; margin-top: 24px; }
+        
+        .question { display: none; text-align: left; animation: fadeIn 0.3s ease; }
         .question.active { display: block; }
-        .question h2 { color: #333; font-size: 18px; margin-bottom: 25px; line-height: 1.6; font-weight: 500; }
-        .progress { color: #999; font-size: 13px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .progress-bar { flex: 1; height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, #ff6b6b, #ffa07a); transition: width 0.3s; }
-        .option { display: block; width: 100%; padding: 14px 18px; margin-bottom: 10px; border: 2px solid #eee; border-radius: 12px; background: white; font-size: 15px; cursor: pointer; transition: all 0.2s; text-align: left; }
-        .option:hover { border-color: #ff6b6b; }
         
-        .calculating { display: none; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question h2 { 
+            color: #1a1a1a; 
+            font-size: 18px; 
+            margin-bottom: 28px; 
+            line-height: 1.7; 
+            font-weight: 500;
+        }
+        
+        .progress { 
+            color: #999; 
+            font-size: 13px; 
+            margin-bottom: 20px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        
+        .progress-bar { 
+            flex: 1; 
+            height: 6px; 
+            background: #f0f0f0; 
+            border-radius: 3px; 
+            overflow: hidden; 
+        }
+        
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #FF6B6B, #FF8E8E); 
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            border-radius: 3px;
+        }
+        
+        .option { 
+            display: block; 
+            width: 100%; 
+            padding: 16px 20px; 
+            margin-bottom: 12px; 
+            border: 2px solid #f0f0f0; 
+            border-radius: 14px; 
+            background: white; 
+            font-size: 15px; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            text-align: left;
+            color: #333;
+        }
+        
+        .option:hover { 
+            border-color: #FF6B6B; 
+            background: #FFF8F8;
+        }
+        
+        .calculating { display: none; text-align: center; padding: 40px 0; }
         .calculating.active { display: block; }
-        .dot { animation: dot 1.5s infinite; }
-        @keyframes dot { 0%, 20% { opacity: 0; } 50% { opacity: 1; } 80%, 100% { opacity: 0; } }
         
-        .result { display: none; }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f0f0f0;
+            border-top-color: #FF6B6B;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .result { display: none; animation: fadeIn 0.4s ease; }
         .result.active { display: block; }
         
-        .attachment-type { font-size: 36px; margin: 20px 0; }
-        .type-name { font-size: 28px; font-weight: bold; color: #ff6b6b; margin-bottom: 10px; }
-        .type-desc { font-size: 16px; color: #666; margin-bottom: 20px; line-height: 1.8; }
+        .result-emoji { font-size: 56px; margin-bottom: 12px; }
+        .result-type { 
+            font-size: 28px; 
+            font-weight: 700; 
+            color: #FF6B6B; 
+            margin-bottom: 8px; 
+        }
         
-        .section { text-align: left; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
-        .section h3 { font-size: 15px; color: #333; margin-bottom: 12px; }
-        .detail-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 14px; }
+        .result-desc { 
+            font-size: 15px; 
+            color: #666; 
+            margin-bottom: 24px; 
+            line-height: 1.8;
+            padding: 0 8px;
+        }
+        
+        .section { 
+            text-align: left; 
+            margin-top: 24px; 
+            padding-top: 24px; 
+            border-top: 1px solid #f5f5f5; 
+        }
+        
+        .section h3 { 
+            font-size: 15px; 
+            color: #1a1a1a; 
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        .detail-item { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 12px 0; 
+            border-bottom: 1px solid #f8f8f8; 
+            font-size: 14px; 
+        }
+        
         .detail-label { color: #666; }
-        .detail-value { color: #333; font-weight: 500; }
+        .detail-value { color: #1a1a1a; font-weight: 500; }
         
-        .locked { display: none; }
+        .locked { display: none; margin-top: 24px; }
         .locked.show { display: block; }
         
-        .pay-btn { background: linear-gradient(135deg, #ffa07a 0%, #ff6b6b 100%); margin-top: 15px; justify-content: center; }
+        .pay-btn { 
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%); 
+            margin-top: 20px; 
+            justify-content: center; 
+            color: white;
+            border: none;
+        }
+        
         .pay-btn.show { display: flex; }
         
-        .free-btn { background: #07c160; margin-top: 10px; justify-content: center; }
+        .free-btn { 
+            background: #07c160; 
+            margin-top: 12px; 
+            justify-content: center; 
+            color: white;
+            border: none;
+        }
         
-        .tip-red { color: #e74c3c; font-size: 12px; margin-top: 15px; padding: 10px; background: #fff5f5; border-radius: 8px; text-align: left; }
+        .tip-red { 
+            color: #FF6B6B; 
+            font-size: 12px; 
+            margin-top: 20px; 
+            padding: 14px; 
+            background: #FFF5F5; 
+            border-radius: 12px; 
+            text-align: left;
+            line-height: 1.6;
+        }
         
-        .feature-box { background: linear-gradient(135deg, #fff5f5 0%, #fff0f5 100%); border-radius: 12px; padding: 15px; margin: 15px 0; text-align: left; }
-        .feature-box h4 { color: #ff6b6b; font-size: 14px; margin-bottom: 10px; }
-        .feature-item { font-size: 13px; color: #666; padding: 5px 0; }
+        .feature-box { 
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFF8F8 100%); 
+            border-radius: 16px; 
+            padding: 20px; 
+            margin: 20px 0; 
+            text-align: left;
+            border: 1px solid #FFE5E5;
+        }
         
-        .psycho-section { background: linear-gradient(135deg, #2d1f3d 0%, #1a1a2e 100%); border-radius: 12px; padding: 20px; margin: 15px 0; text-align: left; }
-        .psycho-section h4 { color: #ffa07a; font-size: 14px; margin-bottom: 15px; }
-        .psycho-content { font-size: 13px; color: #d4d4d8; line-height: 1.9; text-align: left; }
-        .psycho-content p { margin-bottom: 12px; }
-        .highlight { color: #ffa07a; font-weight: bold; }
-        .term { color: #4ecca3; font-style: italic; }
+        .feature-box h4 { 
+            color: #FF6B6B; 
+            font-size: 15px; 
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
         
-        .wechat-pay { background: #07c160; }
-        .alipay { background: #1677ff; }
+        .feature-item { 
+            font-size: 13px; 
+            color: #666; 
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-item::before {
+            content: "✓";
+            color: #FF6B6B;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .psycho-section { 
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d4a 100%); 
+            border-radius: 16px; 
+            padding: 24px; 
+            margin: 20px 0; 
+            text-align: left; 
+        }
+        
+        .psycho-section h4 { 
+            color: #FFB8B8; 
+            font-size: 15px; 
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        
+        .psycho-content { 
+            font-size: 13px; 
+            color: #d4d4d8; 
+            line-height: 1.9; 
+            text-align: left; 
+        }
+        
+        .psycho-content p { margin-bottom: 14px; }
+        
+        .highlight { color: #FFB8B8; font-weight: 600; }
+        .term { color: #A78BFA; font-style: italic; }
+        
+        .wechat-pay { background: #07c160; color: white; border: none; }
+        .alipay { background: #1677ff; color: white; border: none; margin-top: 10px; }
+        
+        .price-tag {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #1a1a1a;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
     </style>
 </head>
 <body>
     <!-- 首页 -->
     <div class="container" id="home">
-        <span class="tag">小红书热门 · 恋爱必测</span>
+        <span class="tag">小红书 10万+ 人测过</span>
         <h1>恋爱依恋类型测试</h1>
-        <p class="subtitle">基于依恋理论<br>发现你的恋爱潜意识</p>
+        <p class="subtitle">测一测你的依恋风格<br>了解自己在亲密关系中的真实模样</p>
         
         <button class="btn" onclick="start(10)">
             <div>
-                <div class="btn-title">快速版 <span style="background:#07c160;color:white;padding:2px 8px;border-radius:10px;font-size:10px;">免费</span></div>
-                <span class="btn-desc">10道题 · 1分钟</span>
+                <div class="btn-title">快速版</div>
+                <span class="btn-desc">10道题 · 约1分钟</span>
             </div>
             <span class="btn-right">免费</span>
         </button>
@@ -92,14 +357,17 @@
         <button class="btn" onclick="start(16)">
             <div>
                 <div class="btn-title">标准版</div>
-                <span class="btn-desc">16道题 · 3分钟</span>
+                <span class="btn-desc">16道题 · 约3分钟</span>
             </div>
             <span class="btn-right">免费</span>
         </button>
         
         <button class="btn btn-premium" onclick="start(25)">
             <div>
-                <div class="btn-title">深度版 <span style="background:#fff;color:#ff6b6b;padding:2px 8px;border-radius:10px;font-size:10px;">推荐</span></div>
+                <div class="btn-title">
+                    深度版
+                    <span class="price-tag">爆款</span>
+                </div>
                 <span class="btn-desc">25道题 · 含深度解析</span>
             </div>
             <span class="btn-right">¥2.99</span>
@@ -110,10 +378,9 @@
 
     <!-- 计算页 -->
     <div class="container calculating" id="calculating">
-        <h1>正在分析中...</h1>
-        <p class="subtitle">
-            <span id="calc-text">正在解析你的恋爱依恋模式<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>
-        </p>
+        <div class="loading-spinner"></div>
+        <h1>分析中...</h1>
+        <p class="subtitle">正在解析你的恋爱依恋模式</p>
     </div>
 
     <!-- 答题页 -->
@@ -130,9 +397,9 @@
     <div class="container result" id="result">
         <span class="tag">测评完成</span>
         
-        <div class="attachment-type" id="emoji">💕</div>
-        <div class="type-name" id="typeName">安全型</div>
-        <div class="type-desc" id="typeDesc">你拥有健康的依恋模式</div>
+        <div class="result-emoji" id="emoji">💕</div>
+        <div class="result-type" id="typeName">安全型</div>
+        <div class="result-desc" id="typeDesc">你拥有健康的依恋模式</div>
         
         <div class="section">
             <h3>📊 依恋维度分析</h3>
@@ -153,10 +420,6 @@
                 <span class="detail-value" id="intimacyNeed">-</span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">独立需求</span>
-                <span class="detail-value" id="independenceNeed">-</span>
-            </div>
-            <div class="detail-item">
                 <span class="detail-label">表达方式</span>
                 <span class="detail-value" id="expressionStyle">-</span>
             </div>
@@ -165,26 +428,24 @@
         <div class="locked" id="locked-section">
             <div class="feature-box">
                 <h4>🔒 解锁深度分析</h4>
-                <p style="color:#666;font-size:13px;margin-bottom:10px;">¥2.99解锁：</p>
-                <div class="feature-item">① 依恋类型深度解读</div>
-                <div class="feature-item">② 原生家庭影响分析</div>
-                <div class="feature-item">③ 恋爱模式成因</div>
-                <div class="feature-item">④ 关系改进建议</div>
-                <div class="feature-item">⑤ 精神分析潜意识解读</div>
+                <p style="color:#666;font-size:13px;margin-bottom:14px;">¥2.99解锁全部深度内容</p>
+                <div class="feature-item">依恋类型深度解读</div>
+                <div class="feature-item">原生家庭影响分析</div>
+                <div class="feature-item">恋爱模式成因</div>
+                <div class="feature-item">关系改进建议</div>
+                <div class="feature-item">精神分析潜意识解读</div>
             </div>
         </div>
         
         <button class="btn pay-btn" id="payBtn" onclick="showPay()">
-            <div style="text-align:center;width:100%;">
-                <div class="btn-title">立即支付 ¥2.99</div>
-            </div>
+            <span style="text-align:center;width:100%;font-weight:600;">立即支付 ¥2.99</span>
         </button>
         
         <button class="btn free-btn" onclick="share()">
-            <div style="text-align:center;width:100%;">分享给朋友一起测</div>
+            <span style="text-align:center;width:100%;font-weight:600;">分享给朋友一起测</span>
         </button>
         
-        <p class="tip">结果仅供参考，不作为情感建议</p>
+        <p class="tip-red">💡 结果仅供参考，不作为情感建议</p>
     </div>
 
     <!-- 支付页 -->
@@ -194,32 +455,32 @@
         <p class="subtitle">¥2.99 解锁深度版</p>
         
         <div class="feature-box">
-            <div class="detail-item"><span>依恋类型深度解读</span><span>✅</span></div>
-            <div class="detail-item"><span>原生家庭分析</span><span>✅</span></div>
-            <div class="detail-item"><span>恋爱模式成因</span><span>✅</span></div>
-            <div class="detail-item"><span>精神分析解读</span><span>✅</span></div>
+            <div class="detail-item"><span>依恋类型深度解读</span><span>✓</span></div>
+            <div class="detail-item"><span>原生家庭分析</span><span>✓</span></div>
+            <div class="detail-item"><span>恋爱模式成因</span><span>✓</span></div>
+            <div class="detail-item"><span>精神分析解读</span><span>✓</span></div>
         </div>
         
         <button class="btn wechat-pay" onclick="paySuccess()">
-            <div style="text-align:center;width:100%;"><div class="btn-title">微信支付 ¥2.99</div></div>
+            <span style="text-align:center;width:100%;font-weight:600;">微信支付 ¥2.99</span>
         </button>
         
         <button class="btn alipay" style="margin-top:10px;">
-            <div style="text-align:center;width:100%;"><div class="btn-title">支付宝支付 ¥2.99</div></div>
+            <span style="text-align:center;width:100%;font-weight:600;">支付宝支付 ¥2.99</span>
         </button>
         
-        <button class="btn" style="margin-top:15px;background:#999;" onclick="back()">
-            <div style="text-align:center;width:100%;">返回</div>
+        <button class="btn" style="margin-top:16px;background:#f5f5f5;color:#666;border:none;" onclick="back()">
+            <span style="text-align:center;width:100%;font-weight:600;">返回</span>
         </button>
     </div>
 
     <!-- 完整报告页 -->
     <div class="container result" id="fullreport" style="display:none;">
-        <span class="tag" style="background:#07c160;">🎉 支付成功</span>
+        <span class="tag" style="background:linear-gradient(135deg, #07c160 0%, #06ad56 100%);">🎉 支付成功</span>
         
-        <div class="attachment-type" id="emoji2">💕</div>
-        <div class="type-name" id="typeName2">安全型</div>
-        <div class="type-desc" id="typeDesc2">你拥有健康的依恋模式</div>
+        <div class="result-emoji" id="emoji2">💕</div>
+        <div class="result-type" id="typeName2">安全型</div>
+        <div class="result-desc" id="typeDesc2">你拥有健康的依恋模式</div>
         
         <!-- 原生家庭 -->
         <div class="psycho-section">
@@ -236,7 +497,7 @@
         <!-- 关系建议 -->
         <div class="feature-box">
             <h4>💡 关系改进建议</h4>
-            <div id="relationshipAdvice"></div>
+            <div id="relationshipAdvice" style="font-size:13px;color:#666;line-height:1.8;"></div>
         </div>
         
         <!-- 精神分析 -->
@@ -245,44 +506,39 @@
             <div class="psycho-content" id="psychoContent"></div>
         </div>
         
-        <button class="btn" style="background:#07c160;margin-top:20px;" onclick="downloadReport()">
-            <div style="text-align:center;width:100%;"><div class="btn-title">保存报告到相册</div></div>
+        <button class="btn wechat-pay" style="margin-top:20px;" onclick="downloadReport()">
+            <span style="text-align:center;width:100%;font-weight:600;">保存报告到相册</span>
         </button>
         
-        <button class="btn" style="margin-top:10px;" onclick="share()">
-            <div style="text-align:center;width:100%;">分享给朋友</div></div>
+        <button class="btn" style="margin-top:10px;background:#f5f5f5;color:#333;border:none;" onclick="share()">
+            <span style="text-align:center;width:100%;font-weight:600;">分享给朋友</span>
         </button>
         
-        <p class="tip">结果仅供参考，不作为情感建议</p>
+        <p class="tip">结果仅供参考，不作为诊断依据</p>
     </div>
 
     <script>
         const questions = [
-            // 焦虑维度
             "当恋人没有及时回复消息时，你会：",
             "恋爱中，你经常担心失去对方吗？",
             "你希望恋人经常表达爱意吗？",
             "争吵后，你会反复思考谁对谁错吗？",
             "你会经常查看恋人的社交动态吗？",
-            // 回避维度
             "恋爱中你需要个人空间吗？",
             "表达情感对你来说困难吗？",
             "你倾向于在关系中保持独立吗？",
             "当关系变亲密时，你想后退吗？",
             "你不喜欢依赖恋人吗？",
-            // 深入
-            "你的童年经历主要与谁在一起？",
+            "你的童年主要与谁在一起？",
             "父母关系对你的影响是？",
             "初恋经历让你对爱情更：",
             "恋爱中你最害怕的是：",
             "你通常如何表达爱意？",
-            // 依恋行为
             "恋人惹你生气时，你会：",
             "你会在社交媒体上秀恩爱吗？",
             "恋爱中你会经常妥协吗？",
             "你相信永恒的爱情吗？",
             "如果失恋，你会：",
-            // 关系预期
             "你理想的恋爱节奏是：",
             "你会主动追求还是等待被追？",
             "恋爱中你会保持神秘感吗？",
@@ -318,7 +574,6 @@
             ["缘分天注定", "一半一半", "努力更重要"]
         ];
         
-        // 依恋类型
         const attachmentTypes = {
             secure: { name: "安全型", emoji: "💕", desc: "你拥有健康的依恋模式，既能享受亲密，又能保持独立。你相信自己值得被爱，也信任伴侣。" },
             anxious: { name: "焦虑型", emoji: "💔", desc: "你渴望亲密但又害怕被抛弃，经常感到不安。你需要伴侣不断确认爱意，容易过度依赖。" },
@@ -329,8 +584,8 @@
         let current = 0;
         let answers = [];
         let totalQuestions = 25;
-        let anxiety = 0; // 焦虑分数
-        let avoidance = 0; // 回避分数
+        let anxiety = 0;
+        let avoidance = 0;
 
         function start(count) {
             totalQuestions = count;
@@ -362,14 +617,8 @@
         function select(i) {
             answers.push(i);
             
-            // 计算焦虑分数 (前5题)
-            if (current < 5) {
-                anxiety += (2 - i); // 0=2, 1=1, 2=0
-            }
-            // 计算回避分数 (5-10题)
-            if (current >= 5 && current < 10) {
-                avoidance += i; // 0=0, 1=1, 2=2
-            }
+            if (current < 5) anxiety += (2 - i);
+            if (current >= 5 && current < 10) avoidance += i;
             
             if (current < totalQuestions - 1) {
                 current++;
@@ -390,11 +639,9 @@
         }
 
         function showResult() {
-            // 归一化
             anxiety = Math.max(0, Math.min(10, anxiety));
             avoidance = Math.max(0, Math.min(10, avoidance));
             
-            // 确定类型
             let type = "secure";
             if (anxiety >= 5 && avoidance >= 5) type = "fearful";
             else if (anxiety >= 5) type = "anxious";
@@ -406,13 +653,9 @@
             document.getElementById('typeName').textContent = result.name;
             document.getElementById('typeDesc').textContent = result.desc;
             
-            // 更新维度
             document.getElementById('anxietyLevel').textContent = anxiety >= 5 ? "高" : (anxiety >= 3 ? "中" : "低");
             document.getElementById('avoidanceLevel').textContent = avoidance >= 5 ? "高" : (avoidance >= 3 ? "中" : "低");
-            
-            // 恋爱特征
             document.getElementById('intimacyNeed').textContent = anxiety >= 5 ? "高" : "适中";
-            document.getElementById('independenceNeed').textContent = avoidance >= 5 ? "高" : "适中";
             document.getElementById('expressionStyle').textContent = type === "avoidant" ? "含蓄" : "直接";
             
             if (totalQuestions >= 25) {
@@ -444,12 +687,10 @@
             document.getElementById('typeName2').textContent = result.name;
             document.getElementById('typeDesc2').textContent = result.desc;
             
-            // 生成分析
             generateDeepAnalysis(type);
         }
 
         function generateDeepAnalysis(type) {
-            // 原生家庭
             const familyTexts = {
                 "安全型": "你在有爱且稳定的环境中成长，父母关系和谐，让你建立了对亲密关系的信任。",
                 "焦虑型": "可能由于童年照顾者的不稳定（时冷时热），让你对亲密关系产生不安全感。",
@@ -458,7 +699,6 @@
             };
             document.getElementById('familyAnalysis').innerHTML = "<p>" + (familyTexts[type] || "") + "</p>";
             
-            // 恋爱模式成因
             const patternTexts = {
                 "安全型": "你形成了健康的'内部工作模型'，相信自己值得被爱，也相信他人是可信任的。",
                 "焦虑型": "你的'内部工作模型'认为'我不够好'且'他人不可靠'，导致对被抛弃的恐惧。",
@@ -467,28 +707,26 @@
             };
             document.getElementById('patternAnalysis').innerHTML = "<p>" + (patternTexts[type] || "") + "</p>";
             
-            // 关系建议
             const adviceTexts = {
                 "安全型": "继续保持！你可以尝试更多表达情感，帮助伴侣理解你的需求。",
                 "焦虑型": "建议：1.建立自己的社交圈不过度依赖恋人 2.练习情绪自我安抚 3.与伴侣坦诚沟通需求。",
                 "回避型": "建议：1.尝试适度打开心扉 2.认识到独立与亲密可以并存 3.接受伴侣的支持。",
                 "混乱型": "建议：1.寻求专业帮助理清依恋模式 2.学会识别自己的真实感受 3.建立健康的关系边界。"
             };
-            document.getElementById('relationshipAdvice').innerHTML = "<p style='font-size:13px;color:#666;'>" + (adviceTexts[type] || "") + "</p>";
+            document.getElementById('relationshipAdvice').innerHTML = "<p>" + (adviceTexts[type] || "") + "</p>";
             
-            // 精神分析
             let psycho = "";
             if (type === "安全型") {
-                psycho = "<p>从<span class='highlight'>精神分析</span>角度，你的<span class='term'>客体关系</span>发展良好，早期照顾者满足了你的<span class='highlight'>情感需求</span>，让你形成了<span class='term'>安全基地</span>。你的<span class='highlight'>超我</span>与<span class='term'>本我</span>较为和谐，能够<span class='highlight'>健康地</span>处理亲密关系。</p>";
+                psycho = "<p>从<span class='highlight'>精神分析</span>角度，你的<span class='term'>客体关系</span>发展良好，早期照顾者满足了你的<span class='highlight'>情感需求</span>，让你形成了<span class='term'>安全基地</span>。</p>";
             } else if (type === "焦虑型") {
-                psycho = "<p>从<span class='highlight'>精神分析</span>角度，你的<span class='term'>依恋</span>呈现<span class='highlight'>矛盾性</span>。这源于<span class='term'>早期客体</span>的不稳定——照顾者<span class='highlight'>时好时坏</span>，让你形成了<span class='term'>混合型依恋</span>。你在<span class='highlight'>亲密</span>与<span class='term'>焦虑</span>之间挣扎，<span class='term'>超我</span>过强导致<span class='highlight'>自我</span>价值感低。建议通过<span class='term'>心理咨询</span>修复<span class='highlight'>早期创伤</span>。</p>";
+                psycho = "<p>从<span class='highlight'>精神分析</span>角度，你的<span class='term'>依恋</span>呈现<span class='highlight'>矛盾性</span>。源于<span class='term'>早期客体</span>的不稳定，<span class='highlight'>时好时坏</span>的照顾方式让你形成了<span class='term'>混合型依恋</span>。</p>";
             } else if (type === "回避型") {
-                psycho = "<p>从<span class='highlight'>精神分析</span>角度，你发展了<span class='term'>情感隔离</span>这一<span class='highlight'>防御机制</span>。早期经历告诉你<span class='term'>依赖他人是危险的</span>，所以你用<span class='highlight'>压抑</span>情感需求来保护自己。这是一种<span class='term'>初级防御</span>，虽然保护了你，但也阻碍了<span class='highlight'>深度亲密</span>。建议尝试<span class='term'>逐步打开</span>内心，信任他人。</p>";
+                psycho = "<p>从<span class='highlight'>精神分析</span>角度，你发展了<span class='term'>情感隔离</span>这一<span class='highlight'>防御机制</span>。早期经历告诉你<span class='term'>依赖他人是危险的</span>，所以用<span class='highlight'>压抑</span>情感需求来保护自己。</p>";
             } else {
-                psycho = "<p>从<span class='highlight'>精神分析</span>角度，你的<span class='term'>依恋系统</span>处于<span class='highlight'>混乱</span>状态。这是最复杂的<span class='term'>防御结构</span>——你既渴望<span class='highlight'>亲密</span>又害怕<span class='term'>被吞噬</span>。这可能源于<span class='highlight'>早期创伤</span>（如虐待、严重忽视）。在<span class='term'>精神分析</span>中，你需要<span class='highlight'>重建</span>对<span class='term'>客体</span>的信任。建议<span class='highlight'>寻求专业帮助</span>。</p>";
+                psycho = "<p>从<span class='highlight'>精神分析</span>角度，你的<span class='term'>依恋系统</span>处于<span class='highlight'>混乱</span>状态。这是最复杂的<span class='term'>防御结构</span>——既渴望<span class='highlight'>亲密</span>又害怕<span class='term'>被吞噬</span>。</p>";
             }
             
-            psycho += "<p style='margin-top:15px;'><span class='highlight'>分析师说：</span>依恋类型不是命运，而是<span class='term'>可改变</span>的。通过<span class='highlight'>自我觉察</span>和<span class='term'>安全关系</span>的体验，你可以逐步<span class='highlight'>修复</span>依恋模式。</p>";
+            psycho += "<p style='margin-top:15px;'><span class='highlight'>分析师说：</span>依恋类型不是命运，而是<span class='term'>可改变</span>的。通过<span class='highlight'>自我觉察</span>和安全关系的体验，你可以逐步<span class='highlight'>修复</span>依恋模式。</p>";
             
             document.getElementById('psychoContent').innerHTML = psycho;
         }
