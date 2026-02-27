@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>测测你的焦虑程度</title>
+    <title>MBTI-Pro人格测试 | 发现你的真实性格</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 15px; }
@@ -12,6 +12,7 @@
         h2 { color: #333; font-size: 18px; margin-bottom: 15px; }
         .subtitle { color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
         .tag { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; margin-bottom: 15px; }
+        .mbti-tag { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         
         .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 16px 24px; font-size: 15px; border-radius: 50px; cursor: pointer; transition: all 0.3s; width: 100%; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; }
         .btn:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
@@ -41,6 +42,10 @@
         .result { display: none; }
         .result.active { display: block; }
         
+        .mbti-result { font-size: 64px; font-weight: bold; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 20px 0; }
+        .mbti-name { font-size: 24px; color: #333; margin-bottom: 10px; font-weight: bold; }
+        .mbti-desc { font-size: 16px; color: #666; margin-bottom: 20px; line-height: 1.8; }
+        
         .section { text-align: left; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
         .section h3 { font-size: 15px; color: #333; margin-bottom: 12px; }
         .detail-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 14px; }
@@ -57,12 +62,12 @@
         
         .tip-red { color: #e74c3c; font-size: 12px; margin-top: 15px; padding: 10px; background: #fff5f5; border-radius: 8px; text-align: left; }
         
-        /* 精神分析关键词 */
-        .psycho-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .psycho-item { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 15px 10px; text-align: center; }
-        .psycho-item.active { border: 2px solid #e94560; }
-        .psycho-term { color: #e94560; font-size: 14px; font-weight: bold; margin-bottom: 5px; }
-        .psycho-desc { color: #888; font-size: 11px; }
+        /* MBTI人格卡片 */
+        .mbti-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .mbti-item { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 15px 10px; text-align: center; }
+        .mbti-item.active { border: 2px solid #e94560; }
+        .mbti-term { color: #e94560; font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+        .mbti-desc-text { color: #888; font-size: 11px; }
         
         .top-items { background: #fff5f5; border-radius: 12px; padding: 15px; margin: 15px 0; text-align: left; }
         .top-items h4 { color: #e74c3c; font-size: 14px; margin-bottom: 10px; }
@@ -85,54 +90,65 @@
         
         .premium-only { display: none; }
         .premium-only.show { display: block; }
+        
+        /* MBTI类型描述 */
+        .type-detail { background: #f8f9fa; border-radius: 12px; padding: 15px; margin: 15px 0; text-align: left; }
+        .type-detail h4 { color: #333; font-size: 14px; margin-bottom: 10px; }
+        .type-detail p { font-size: 13px; color: #666; line-height: 1.8; }
+        
+        .stat-bar { display: flex; align-items: center; margin: 8px 0; }
+        .stat-label { width: 60px; font-size: 12px; color: #666; }
+        .stat-track { flex: 1; height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+        .stat-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; }
+        .stat-value { width: 40px; font-size: 12px; color: #333; text-align: right; }
     </style>
 </head>
 <body>
     <!-- 首页 -->
     <div class="container" id="home">
-        <span class="tag">国际权威量表 · 免费测评</span>
-        <h1>测测你的焦虑程度</h1>
-        <p class="subtitle">基于GAD-7与PHQ-9国际权威量表<br>科学评估你的心理状态</p>
+        <span class="tag mbti-tag">小红书热门 · 200万人测过</span>
+        <h1>测试</h1MBTI-Pro人格>
+        <p class="subtitle">基于荣格心理学 + 精神分析<br>发现你的真实性格与潜意识</p>
         
-        <button class="btn" onclick="start(8)">
+        <button class="btn" onclick="start(12)">
             <div>
-                <div class="btn-title">快速分析 <span class="premium-tag" style="background:#07c160;color:white;font-size:10px;">免费</span></div>
-                <span class="btn-desc">8道题 · 约1分钟</span>
+                <div class="btn-title">快速版 <span class="premium-tag" style="background:#07c160;color:white;font-size:10px;">免费</span></div>
+                <span class="btn-desc">12道题 · 1分钟</span>
             </div>
             <span class="btn-right">免费</span>
         </button>
         
-        <button class="btn" onclick="start(15)">
+        <button class="btn" onclick="start(20)">
             <div>
-                <div class="btn-title">深度分析</div>
-                <span class="btn-desc">15道题 · 约3分钟</span>
+                <div class="btn-title">标准版</div>
+                <span class="btn-desc">20道题 · 3分钟</span>
             </div>
             <span class="btn-right">免费</span>
         </button>
         
-        <button class="btn btn-premium" onclick="start(35)">
+        <button class="btn btn-premium" onclick="start(32)">
             <div>
-                <div class="btn-title">精神分析版 <span class="premium-tag">推荐</span></div>
-                <span class="btn-desc">35道题 · 含深度精神分析</span>
+                <div class="btn-title">Pro深度版 <span class="premium-tag">推荐</span></div>
+                <span class="btn-desc">32道题 · 含深度分析</span>
             </div>
             <span class="btn-right">¥2.99</span>
         </button>
         
-        <p class="tip">本测评结果仅供参考，不作为诊疗依据</p>
+        <p class="tip">本测试仅供参考，不构成心理诊断</p>
     </div>
 
     <!-- 计算页 -->
     <div class="container calculating" id="calculating">
         <h1>正在分析中...</h1>
         <p class="calculating-text">
-            <span id="calc-text">正在综合分析您的行为数据点<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>
+            <span id="calc-text">正在解析你的性格密码<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>
         </p>
     </div>
 
     <!-- 答题页 -->
     <div class="container question" id="quiz">
         <div class="progress">
-            <span id="progress-text">1/35</span>
+            <span id="progress-text">1/32</span>
             <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 3%"></div></div>
         </div>
         <h2 id="questionText"></h2>
@@ -141,42 +157,67 @@
 
     <!-- 结果页 -->
     <div class="container result" id="result">
-        <span class="tag">测评完成</span>
-        <h1>你的心理健康报告</h1>
+        <span class="tag mbti-tag">测评完成</span>
         
-        <div class="section">
-            <h3>📊 基础结果</h3>
-            <div class="detail-item">
-                <span class="detail-label">焦虑严重度</span>
-                <span class="detail-value" id="anxiety-level">-</span>
+        <div class="mbti-result" id="mbtiResult">INTJ</div>
+        <div class="mbti-name" id="mbtiName">战略家</div>
+        <div class="mbti-desc" id="mbtiDesc">理性、獨立、追求效率</div>
+        
+        <div class="type-detail">
+            <h4>📊 你的性格维度</h4>
+            <div class="stat-bar">
+                <span class="stat-label">E-I</span>
+                <div class="stat-track"><div class="stat-fill" id="eiBar" style="width:30%"></div></div>
+                <span class="stat-value" id="eiValue">30%</span>
             </div>
-            <div class="detail-item">
-                <span class="detail-label">抑郁风险</span>
-                <span class="detail-value" id="depression-level">-</span>
+            <div class="stat-bar">
+                <span class="stat-label">S-N</span>
+                <div class="stat-track"><div class="stat-fill" id="snBar" style="width:70%"></div></div>
+                <span class="stat-value" id="snValue">70%</span>
             </div>
-            <div class="detail-item">
-                <span class="detail-label">睡眠质量</span>
-                <span class="detail-value" id="sleep-level">-</span>
+            <div class="stat-bar">
+                <span class="stat-label">T-F</span>
+                <div class="stat-track"><div class="stat-fill" id="tfBar" style="width:60%"></div></div>
+                <span class="stat-value" id="tfValue">60%</span>
             </div>
-            <div class="detail-item">
-                <span class="detail-label">情绪稳定性</span>
-                <span class="detail-value" id="emotion-level">-</span>
+            <div class="stat-bar">
+                <span class="stat-label">J-P</span>
+                <div class="stat-track"><div class="stat-fill" id="jpBar" style="width:80%"></div></div>
+                <span class="stat-value" id="jpValue">80%</span>
             </div>
         </div>
         
-        <div class="desc" id="desc"></div>
+        <div class="section">
+            <h3>🔍 你的性格特征</h3>
+            <div class="detail-item">
+                <span class="detail-label">能量方向</span>
+                <span class="detail-value" id="energy">内倾</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">感知方式</span>
+                <span class="detail-value" id="感知">直觉</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">决策方式</span>
+                <span class="detail-value" id="decision">思考</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">生活态度</span>
+                <span class="detail-value" id="lifestyle">判断</span>
+            </div>
+        </div>
         
         <div class="locked" id="locked-section">
             <div style="padding: 15px; background: linear-gradient(135deg, #fff5f5 0%, #fff0f5 100%); border-radius: 12px; margin-bottom: 15px; text-align: left;">
-                <p style="color: #f5576c; font-size: 14px; font-weight: bold; margin-bottom: 10px;">🔒 付费解锁精神分析版</p>
-                <p style="color: #666; font-size: 13px; margin-bottom: 8px;">¥2.99解锁以下内容：</p>
+                <p style="color: #f5576c; font-size: 14px; font-weight: bold; margin-bottom: 10px;">🔒 解锁Pro深度分析</p>
+                <p style="color: #666; font-size: 13px; margin-bottom: 8px;">¥2.99解锁：</p>
                 
                 <div style="margin: 10px 0;">
-                    <div style="font-size:13px;color:#666;padding:5px0;">① 防御机制分析（投射/认同/否认/压抑...）</div>
-                    <div style="font-size:13px;color:#666;padding:5px0;">② 依恋类型诊断</div>
-                    <div style="font-size:13px;color:#666;padding:5px0;">③ 潜意识地形图</div>
-                    <div style="font-size:13px;color:#666;padding:5px0;">④ 俄狄浦斯情结解读</div>
-                    <div style="font-size:13px;color:#666;padding:5px0;">⑤ 2500字深度精神分析报告</div>
+                    <div style="font-size:13px;color:#666;padding:5px0;">① 16型人格深度解读</div>
+                    <div style="font-size:13px;color:#666;padding:5px0;">② 潜在恋爱模式分析</div>
+                    <div style="font-size:13px;color:#666;padding:5px0;">③ 职业天赋建议</div>
+                    <div style="font-size:13px;color:#666;padding:5px0;">④ 潜意识防御机制</div>
+                    <div style="font-size:13px;color:#666;padding:5px0;">⑤ 精神分析深度报告</div>
                 </div>
             </div>
         </div>
@@ -191,31 +232,30 @@
             <div style="text-align:center;width:100%;">分享给朋友一起测</div>
         </button>
         
-        <p class="tip-red">📞 如有自伤念头，请立即拨打 12356 心理援助热线</p>
-        <p class="tip">结果仅供参考，不作为诊疗依据</p>
+        <p class="tip">结果仅供参考，不作为诊断依据</p>
     </div>
 
     <!-- 支付页 -->
     <div class="container" id="paypage" style="display:none;">
-        <span class="tag">安全支付</span>
+        <span class="tag mbti-tag">安全支付</span>
         <h1>确认支付</h1>
-        <p class="subtitle">¥2.99 解锁精神分析版</p>
+        <p class="subtitle">¥2.99 解锁Pro深度版</p>
         
         <div style="text-align:left; margin: 20px 0;">
             <div class="detail-item">
-                <span>防御机制分析</span>
+                <span>16型人格深度解读</span>
                 <span>✅</span>
             </div>
             <div class="detail-item">
-                <span>依恋类型诊断</span>
+                <span>恋爱模式分析</span>
                 <span>✅</span>
             </div>
             <div class="detail-item">
-                <span>潜意识地形图</span>
+                <span>职业天赋建议</span>
                 <span>✅</span>
             </div>
             <div class="detail-item">
-                <span>2500字深度报告</span>
+                <span>精神分析报告</span>
                 <span>✅</span>
             </div>
         </div>
@@ -240,57 +280,50 @@
     <!-- 完整报告页 -->
     <div class="container result" id="fullreport" style="display:none;">
         <span class="tag" style="background:#07c160;">🎉 支付成功</span>
-        <h1>你的精神分析报告</h1>
+        
+        <div class="mbti-result" id="mbtiResult2">INTJ</div>
+        <div class="mbti-name" id="mbtiName2">战略家</div>
+        <div class="mbti-desc" id="mbtiDesc2">理性、獨立、追求效率</div>
+        
+        <!-- 恋爱模式 -->
+        <div class="psycho-section" style="text-align:left;">
+            <h4>💕 恋爱模式分析</h4>
+            <div class="psycho-content" id="loveAnalysis"></div>
+        </div>
+        
+        <!-- 职业建议 -->
+        <div class="type-detail">
+            <h4>💼 职业天赋建议</h4>
+            <p id="careerAdvice"></p>
+        </div>
         
         <!-- 防御机制 -->
         <div class="psycho-section" style="text-align:left;">
-            <h4>🛡️ 你的防御机制</h4>
-            <div class="psycho-grid" id="defenseGrid">
-                <div class="psycho-item">
-                    <div class="psycho-term">投射</div>
-                    <div class="psycho-desc">把自己的欲望投射给他人</div>
+            <h4>🛡️ 潜意识防御机制</h4>
+            <div class="mbti-grid" id="defenseGrid">
+                <div class="mbti-item">
+                    <div class="mbti-term">投射</div>
+                    <div class="mbti-desc-text">把自己的欲望投射给他人</div>
                 </div>
-                <div class="psycho-item">
-                    <div class="psycho-term">认同</div>
-                    <div class="psycho-desc">内化重要他人的特质</div>
+                <div class="mbti-item">
+                    <div class="mbti-term">认同</div>
+                    <div class="mbti-desc-text">内化重要他人的特质</div>
                 </div>
-                <div class="psycho-item">
-                    <div class="psycho-term">否认</div>
-                    <div class="psycho-desc">拒绝承认现实</div>
+                <div class="mbti-item">
+                    <div class="mbti-term">否认</div>
+                    <div class="mbti-desc-text">拒绝承认现实</div>
                 </div>
-                <div class="psycho-item">
-                    <div class="psycho-term">压抑</div>
-                    <div class="psycho-desc">把痛苦排除在意识外</div>
-                </div>
-                <div class="psycho-item">
-                    <div class="psycho-term">合理化</div>
-                    <div class="psycho-desc">为不合理找借口</div>
-                </div>
-                <div class="psycho-item">
-                    <div class="psycho-term">退行</div>
-                    <div class="psycho-desc">回到早期心理阶段</div>
+                <div class="mbti-item">
+                    <div class="mbti-term">压抑</div>
+                    <div class="mbti-desc-text">把痛苦排除在意识外</div>
                 </div>
             </div>
         </div>
         
-        <!-- 依恋类型 -->
-        <div class="psycho-section" style="text-align:left;">
-            <h4>💕 依恋类型</h4>
-            <div id="attachmentType" style="font-size:14px;color:#b8b8d1;line-height:1.8;"></div>
-        </div>
-        
-        <!-- 潜意识 -->
-        <div class="psycho-section" style="text-align:left;">
-            <h4>🌊 潜意识地形图</h4>
-            <div id="unconsciousMap" style="font-size:13px;color:#b8b8d1;line-height:1.8;"></div>
-        </div>
-        
-        <!-- 深度分析 -->
+        <!-- 精神分析 -->
         <div class="psycho-section">
             <h4>深度精神分析报告</h4>
-            <div class="psycho-content" id="psychoContent">
-                <p>正在生成分析报告...</p>
-            </div>
+            <div class="psycho-content" id="psychoContent"></div>
         </div>
         
         <button class="btn" style="background:#07c160;margin-top:20px;" onclick="downloadReport()">
@@ -303,68 +336,128 @@
             <div style="text-align:center;width:100%;">分享给朋友</div>
         </button>
         
-        <p class="tip-red">📞 如需专业帮助，请拨打 12356</p>
+        <p class="tip">结果仅供参考，不作为诊断依据</p>
     </div>
 
     <script>
-        const allQuestions = [
-            // GAD-7
-            "过去两周，你有多少时候感到紧张不安或烦躁？",
-            "过去两周，你有多少时候无法控制自己的担忧？",
-            "过去两周，你有多少时候过度担忧各种事情？",
-            "过去两周，你有多少时候无法放松下来？",
-            "过去两周，你有多少时候坐立不安？",
-            "过去两周，你有多少时候容易发怒？",
-            "过去两周，你有多少时候感到害怕？",
-            // PHQ-9
-            "过去两周，做事时提不起劲或没有乐趣？",
-            "过去两周，感到心情低落、沮丧或绝望？",
-            "过去两周，入睡困难或睡眠质量差？",
-            "过去两周，感觉疲倦或没有精力？",
-            "过去两周，食欲不振或吃太多？",
-            "过去两周觉得自己很糟、失败？",
-            "过去两周，对事物难以集中注意力？",
-            "过去两周，动作或说话缓慢/烦躁坐立不安？",
-            // 自研-防御机制相关
-            "过去两周，你会把错误归咎于他人？",
-            "过去两周，你难以承认自己的错误？",
-            "过去两周，你常觉得自己不够好？",
-            "过去两周，失败后你会找借口？",
-            "过去两周，你回避与人发生冲突？",
-            // 依恋相关
-            "过去两周，你害怕被抛弃？",
-            "过去两周，你过度依赖他人认可？",
-            "过去两周，你难以信任他人？",
-            "过去两周，你与他人保持距离？",
-            "过去两周，你害怕亲密关系？",
-            // 躯体化
-            "过去两周，你会突然心跳加快或胸闷？",
-            "过去两周，你出现肌肉紧绷持续很久？",
-            "过去两周，你因为焦虑回避出门？",
-            // 功能影响
-            "过去两周，你会拖延重要任务？",
-            "过去两周，焦虑让你工作效率下降？",
-            "过去两周，焦虑让你更容易与人冲突？",
-            // 睡眠
-            "过去两周，躺下后脑子停不下来？",
-            "过去两周，半夜醒来难以再次入睡？",
-            "过去两周，醒来后依然疲惫？",
-            // 资源
-            "过去两周，你能找到至少一个人倾诉？",
-            "过去两周，你一周有至少3次身体活动？",
-            "过去两周，你知道至少2种方法让自己缓解？"
+        // MBTI问题 - 每题对应一个维度
+        const questions = [
+            // E-I (外向-内向)
+            "在社交场合中，你通常：",
+            "你更喜欢通过什么方式充电：",
+            // S-N (实感-直觉)
+            "你更关注事物的：",
+            "你更容易相信：",
+            // T-F (思考-情感)
+            "做决策时，你更看重：",
+            "当你不同意他人时，你会：",
+            // J-P (判断-知觉)
+            "你更喜欢有计划的生活还是灵活应变：",
+            "面对截止日期时，你会：",
+            // 深入问题
+            "当你独自一人时，你最想：",
+            "你更容易被什么吸引：",
+            "在团队中，你通常扮演：",
+            "面对新项目，你倾向于：",
+            // 恋爱相关
+            "恋爱中你最看重：",
+            "你的恋爱风格是：",
+            // 工作相关
+            "你工作时更喜欢：",
+            "你更容易因为什么感到压力：",
+            // 深入性格
+            "你觉得自己是：",
+            "当你犯错时，你会：",
+            // 精神分析相关
+            "当你焦虑时，你会：",
+            "你难以接受的事情是：",
+            // 更多维度
+            "你的房间通常是：",
+            "你更倾向于：",
+            // 情感
+            "在争吵后，你倾向于：",
+            "你更在意：",
+            // 决策
+            "买买买时你更看重：",
+            "你更容易感到：",
+            // 社交
+            "你更喜欢：",
+            "你的朋友觉得你：",
+            // 深度
+            "你常常会：",
+            "你害怕失去：",
+            // 最后
+            "如果你可以改变一件事，你会：",
+            "你相信："
         ];
         
-        const options = ["完全没有", "几天", "一半以上天数", "几乎每天"];
+        // 选项，每个选项对应一个维度倾向
+        const options = [
+            ["和很多人在一起", "独自一人"], // E/I
+            ["和朋友聊天", "安静地思考"], // E/I
+            ["具体的事实", "可能性和未来"], // S/N
+            ["自己的经验", "自己的直觉"], // S/N
+            ["逻辑和原则", "他人的感受"], // T/F
+            ["直接指出问题", "委婉地表达"], // T/F
+            ["提前计划好", "随遇而安"], // J/P
+            ["提前完成", "最后一刻完成"], // J/P
+            ["找人聊天", "独自思考"], // E/I
+            ["具体的事物", "抽象的概念"], // S/N
+            ["领导者", "执行者"], // E/I
+            ["先了解全部再行动", "边做边学"], // J/P
+            ["安全感", "心跳感"], // T/F
+            ["主动追求", "等待被追"], // E/I
+            ["独立完成", "团队协作"], // E/I
+            ["时间不够", "选择太多"], // J/P
+            ["理性的人", "感性的人"], // T/F
+            ["承认错误", "找借口"], // T/F
+            ["找事情做", "静心思考"], // E/I
+            ["失控", "无聊"], // J/P
+            ["整洁有序", "随意自在"], // J/P
+            ["按计划", "凭感觉"], // J/P
+            ["主动道歉", "等对方先开口"], // F/T
+            ["事实", "可能性"], // S/N
+            ["实用性", "喜欢程度"], // T/F
+            ["忙碌", "悠闲"], // E/I
+            ["一群人的狂欢", "几个人的安静"], // E/I
+            ["理性冷静", "热情冲动"], // T/F
+            ["回忆过去", "想象未来"], // S/N
+            ["失去掌控", "失去自由"], // J/P
+            ["改变过去", "创造未来"], // S/N
+            ["命运掌握在自己手中", "一切随缘"] // J/P
+        ];
+        
+        const mbtiTypes = {
+            "INTJ": { name: "战略家", desc: "理性、独立、追求效率", type: "想象力丰富但决策果断" },
+            "INTP": { name: "逻辑学家", desc: "理性、好奇、善于分析", type: "喜欢理论胜于实践" },
+            "ENTJ": { name: "指挥官", desc: "果断、自信、领导力强", type: "天生领导者" },
+            "ENTP": { name: "辩论家", desc: "聪明、好奇、爱挑战", type: "喜欢思想碰撞" },
+            "INFJ": { name: "提倡者", desc: "理想主义、有洞察力", type: "追求意义和价值" },
+            "INFP": { name: "调停者", desc: "感性、理想化、有创造力", type: "内心世界丰富" },
+            "ENFJ": { name: "主人公", desc: "有魅力、善于激励他人", type: "天生的领导者" },
+            "ENFP": { name: "竞选者", desc: "热情、创意、善于激励", type: "讨厌束缚" },
+            "ISTJ": { name: "物流师", desc: "可靠、务实、有责任感", type: "遵守规则" },
+            "ISFJ": { name: "守卫者", desc: "忠诚、细心、乐于助人", type: "默默付出" },
+            "ESTJ": { name: "总经理", desc: "高效、果断、善于管理", type: "喜欢掌控" },
+            "ESFJ": { name: "执政官", desc: "热情、善于社交、乐于助人", type: "关注他人需求" },
+            "ISTP": { name: "鉴赏家", desc: "冷静、务实、善于分析", type: "喜欢动手" },
+            "ISFP": { name: "探险家", desc: "灵活、感性、热爱美", type: "追求自由" },
+            "ESTP": { name: "企业家", desc: "灵活、务实、善于谈判", type: "喜欢挑战" },
+            "ESFP": { name: "表演者", desc: "热情、灵活、善于表演", type: "活在当下" }
+        };
         
         let current = 0;
         let answers = [];
-        let totalQuestions = 35;
+        let totalQuestions = 32;
+        
+        // 记录各维度得分
+        let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
 
         function start(count) {
             totalQuestions = count;
             current = 0;
             answers = [];
+            scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
             document.getElementById('home').style.display = 'none';
             document.getElementById('quiz').classList.add('active');
             showQuestion();
@@ -373,10 +466,11 @@
         function showQuestion() {
             document.getElementById('progress-text').textContent = `${current + 1}/${totalQuestions}`;
             document.getElementById('progress-fill').style.width = `${((current + 1) / totalQuestions) * 100}%`;
-            document.getElementById('questionText').textContent = allQuestions[current];
+            document.getElementById('questionText').textContent = questions[current];
+            
             const opts = document.getElementById('options');
             opts.innerHTML = '';
-            options.forEach((opt, i) => {
+            options[current].forEach((opt, i) => {
                 const btn = document.createElement('button');
                 btn.className = 'option';
                 btn.textContent = opt;
@@ -387,6 +481,26 @@
 
         function select(i) {
             answers.push(i);
+            
+            // 计算维度得分
+            // 偶数题：0选第一个得分，1选第二个
+            // 奇数题：反过来
+            const dim = current % 4; // 0:E-I, 1:S-N, 2:T-F, 3:J-P
+            
+            if (dim === 0) { // E-I
+                if (i === 0) scores.E++;
+                else scores.I++;
+            } else if (dim === 1) { // S-N
+                if (i === 0) scores.S++;
+                else scores.N++;
+            } else if (dim === 2) { // T-F
+                if (i === 0) scores.T++;
+                else scores.F++;
+            } else { // J-P
+                if (i === 0) scores.J++;
+                else scores.P++;
+            }
+            
             if (current < totalQuestions - 1) {
                 current++;
                 showQuestion();
@@ -400,7 +514,7 @@
             document.getElementById('calculating').classList.add('active');
             
             let idx = 0;
-            const texts = ["正在解析你的防御机制...", "正在构建依恋类型模型...", "潜意识分析中..."];
+            const texts = ["正在解析你的性格密码...", "正在匹配MBTI类型...", "生成你的专属报告..."];
             const interval = setInterval(() => {
                 document.getElementById('calc-text').innerHTML = texts[idx] + '<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
                 idx++;
@@ -408,34 +522,47 @@
                     clearInterval(interval);
                     showResult();
                 }
-            }, 1500);
+            }, 1200);
         }
 
         function showResult() {
             document.getElementById('calculating').classList.remove('active');
             
-            const gad7Score = answers.slice(0, 7).reduce((a, b) => a + b, 0);
-            const phqScore = answers.slice(7, 16).reduce((a, b) => a + b, 0);
-            const sleepScore = answers[9];
-            const emotionScore = answers[6];
+            // 计算MBTI
+            let mbti = "";
+            mbti += scores.E > scores.I ? "E" : "I";
+            mbti += scores.S > scores.N ? "S" : "N";
+            mbti += scores.T > scores.F ? "T" : "F";
+            mbti += scores.J > scores.P ? "J" : "P";
             
-            document.getElementById('anxiety-level').textContent = gad7Score <= 4 ? "正常" : (gad7Score <= 9 ? "轻度" : (gad7Score <= 14 ? "中度" : "重度"));
-            document.getElementById('depression-level').textContent = phqScore <= 4 ? "正常" : (phqScore <= 9 ? "轻度" : (phqScore <= 14 ? "中度" : "重度"));
-            document.getElementById('sleep-level').textContent = sleepScore <= 1 ? "良好" : (sleepScore <= 2 ? "一般" : "较差");
-            document.getElementById('emotion-level').textContent = emotionScore <= 1 ? "稳定" : (emotionScore <= 2 ? "一般" : "不稳定");
+            const type = mbtiTypes[mbti] || { name: "独特人格", desc: "你的性格独特而复杂", type: "难以分类" };
             
-            const total = answers.reduce((a, b) => a + b, 0);
-            const percentage = Math.round((1 - total / (totalQuestions * 3)) * 100);
+            document.getElementById('mbtiResult').textContent = mbti;
+            document.getElementById('mbtiName').textContent = type.name;
+            document.getElementById('mbtiDesc').textContent = type.desc;
             
-            let desc = "你的心理状态很健康！继续保持规律作息和适度运动。";
-            if (percentage < 80) desc = "你最近有一些焦虑情绪，但还在可控制范围内。建议适当放松，可以尝试深呼吸，运动或冥想。";
-            else if (percentage < 60) desc = "你的焦虑情绪比较明显，可能已经影响到日常生活。建议关注自己的心理状态，可以尝试寻求专业帮助。";
-            else if (percentage < 40) desc = "你的焦虑症状比较严重，建议尽快寻求专业心理咨询师的帮助。";
-            else desc = "建议你立即寻求专业帮助。记住，你不是一个人。";
+            // 更新进度条
+            const totalE = scores.E + scores.I;
+            const totalS = scores.S + scores.N;
+            const totalT = scores.T + scores.F;
+            const totalJ = scores.J + scores.P;
             
-            document.getElementById('desc').textContent = desc;
+            document.getElementById('eiBar').style.width = (scores.E / totalE * 100) + "%";
+            document.getElementById('eiValue').textContent = Math.round(scores.E / totalE * 100) + "%";
+            document.getElementById('snBar').style.width = (scores.N / totalS * 100) + "%";
+            document.getElementById('snValue').textContent = Math.round(scores.N / totalS * 100) + "%";
+            document.getElementById('tfBar').style.width = (scores.T / totalT * 100) + "%";
+            document.getElementById('tfValue').textContent = Math.round(scores.T / totalT * 100) + "%";
+            document.getElementById('jpBar').style.width = (scores.J / totalJ * 100) + "%";
+            document.getElementById('jpValue').textContent = Math.round(scores.J / totalJ * 100) + "%";
             
-            if (totalQuestions >= 35) {
+            // 更新标签
+            document.getElementById('energy').textContent = mbti[0] === "E" ? "外倾" : "内倾";
+            document.getElementById('感知').textContent = mbti[1] === "S" ? "实感" : "直觉";
+            document.getElementById('decision').textContent = mbti[2] === "T" ? "思考" : "情感";
+            document.getElementById('lifestyle').textContent = mbti[3] === "J" ? "判断" : "知觉";
+            
+            if (totalQuestions >= 32) {
                 document.getElementById('locked-section').classList.add('show');
                 document.getElementById('payBtn').classList.add('show');
             }
@@ -457,98 +584,111 @@
             document.getElementById('paypage').style.display = 'none';
             document.getElementById('fullreport').style.display = 'block';
             
-            generatePsycho();
+            // 复制基础结果
+            const mbti = document.getElementById('mbtiResult').textContent;
+            const type = mbtiTypes[mbti] || { name: "独特人格", desc: "独特而复杂" };
+            
+            document.getElementById('mbtiResult2').textContent = mbti;
+            document.getElementById('mbtiName2').textContent = type.name;
+            document.getElementById('mbtiDesc2').textContent = type.desc;
+            
+            // 生成恋爱分析
+            generateLoveAnalysis(mbti);
+            
+            // 生成职业建议
+            generateCareerAdvice(mbti);
+            
+            // 生成精神分析
+            generatePsycho(mbti);
         }
 
-        function generatePsycho() {
-            // 计算各维度
-            const gad7 = answers.slice(0, 7).reduce((a,b)=>a+b, 0);
-            const phq = answers.slice(7, 16).reduce((a,b)=>a+b, 0);
-            const defense = answers.slice(16, 21).reduce((a,b)=>a+b, 0);
-            const attachment = answers.slice(21, 26).reduce((a,b)=>a+b, 0);
-            const body = answers.slice(26, 29).reduce((a,b)=>a+b, 0);
-            const function_ = answers.slice(29, 32).reduce((a,b)=>a+b, 0);
+        function generateLoveAnalysis(mbti) {
+            const loveProfiles = {
+                "INTJ": "你追求高质量的深度关系，倾向于柏拉图式恋爱。",
+                "INTP": "你渴望智力上的共鸣，恋爱中保持独立空间。",
+                "ENTJ": "你主导性强，恋爱中愿意承担领导角色。",
+                "ENTP": "你热爱思想碰撞，讨厌恋爱中的无聊和平淡。",
+                "INFJ": "你追求灵魂伴侣，一旦认定会全身心投入。",
+                "INFP": "你浪漫主义者，渴望找到真正的灵魂伴侣。",
+                "ENFJ": "你天生照顾者，恋爱中乐于付出。",
+                "ENFP": "你热情如火，讨厌被束缚，追求新鲜感。",
+                "ISTJ": "你忠诚可靠，恋爱中务实且有责任感。",
+                "ISFJ": "你温柔体贴，默默守护伴侣。",
+                "ESTJ": "你重视承诺，恋爱中追求稳定。",
+                "ESFJ": "你关怀备至，恋爱中注重仪式感。",
+                "ISTP": "你保持独立，恋爱中需要个人空间。",
+                "ISFP": "你随性浪漫，恋爱中追求美好体验。",
+                "ESTP": "你活在当下，恋爱中充满活力。",
+                "ESFP": "你热情奔放，恋爱中带来快乐。"
+            };
+            
+            document.getElementById('loveAnalysis').innerHTML = "<p>" + (loveProfiles[mbti] || "你有着独特的恋爱模式") + "</p>";
+        }
+
+        function generateCareerAdvice(mbti) {
+            const careerProfiles = {
+                "INTJ": "战略规划、咨询、技术研发",
+                "INTP": "科研、编程、金融分析",
+                "ENTJ": "企业管理、创业、法律",
+                "ENTP": "销售、营销、咨询",
+                "INFJ": "心理咨询、教育、艺术",
+                "INFP": "写作、心理咨询、公益",
+                "ENFJ": "人力资源、培训、教育",
+                "ENFP": "创意、营销、传媒",
+                "ISTJ": "会计、审计、运营",
+                "ISFJ": "护理、社工、行政",
+                "ESTJ": "管理、金融、执法",
+                "ESFJ": "服务、教育、医疗",
+                "ISTP": "工程、技术、体育",
+                "ISFP": "设计、艺术、手工艺",
+                "ESTP": "销售、创业、娱乐",
+                "ESFP": "表演、餐饮、活动策划"
+            };
+            
+            document.getElementById('careerAdvice').textContent = "适合方向：" + (careerProfiles[mbti] || "多元发展");
+        }
+
+        function generatePsycho(mbti) {
+            let report = "";
+            
+            // 基础分析
+            if (mbti[0] === "I") {
+                report += "<p>从精神分析角度看，你属于<span class='highlight'>内倾型</span>人格。你的心理能量主要指向<span class='term'>内部世界</span>，这使得你更善于自我反思，但也可能过度<span class='highlight'>内省</span>。</p>";
+            } else {
+                report += "<p>你属于<span class='highlight'>外倾型</span>人格。心理能量指向外部世界，这让你在社交中获得能量，但也需要注意不要过度<span class='highlight'>依赖外界反馈</span>。</p>";
+            }
             
             // 防御机制
-            const defenseItems = document.querySelectorAll('.psycho-item');
-            const defenseScores = [
-                answers[16] + answers[17], // 投射
-                answers[18] + answers[19], // 认同
-                answers[16] + answers[17], // 否认
-                answers[7] + answers[8],   // 压抑
-                answers[19] + answers[20], // 合理化
-                answers[14] + answers[15]  // 退行
-            ];
+            if (mbti[1] === "N") {
+                report += "<p>你的<span class='term'>直觉(N)</span>主导型认知方式，在精神分析中对应<span class='highlight'>退行</span>到<span class='term'>幻想</span>的能力。你善于用<span class='highlight'>抽象思维</span>来处理情感问题，但这也可能导致<span class='term'>与现实的脱节</span>。</p>";
+            }
             
+            if (mbti[2] === "T") {
+                report += "<p>你的<span class='term'>思考型(T)</span>决策方式，显示你善于<span class='highlight'>情感隔离</span>来处理压力。这是一种成熟的<span class='term'>防御机制</span>，但需要注意不要<span class='highlight'>过度理性</span>而忽视了自己的真实感受。</p>";
+            } else {
+                report += "<p>你的<span class='term'>情感型(F)</span>决策方式，显示你对人际关系高度敏感。你可能存在<span class='highlight'>过度认同</span>的问题，需要学会<span class='term'>建立边界</span>。</p>";
+            }
+            
+            if (mbti[3] === "J") {
+                report += "<p>你的<span class='term'>判断型(J)</span>生活态度，体现了强大的<span class='highlight'>超我</span>结构。你追求控制和秩序，这可能源于对<span class='term'>混乱</span>的恐惧。需要允许自己<span class='highlight'>放松控制</span>。</p>";
+            } else {
+                report += "<p>你的<span class='term'>知觉型(P)</span>生活态度，体现了灵活的<span class='highlight'>防御方式</span>。你善于适应环境，但这也可能表现为<span class='term'>回避决定</span>。建议学会<span class='highlight'>接受不确定性</span>。</p>";
+            }
+            
+            // 临床建议
+            report += "<div class='quote'>\"认识你自己\" —— 苏格拉底</div>";
+            report += "<p><span class='highlight'>分析建议：</span>你的MBTI类型揭示了独特的<span class='term'>防御结构</span>。通过<span class='highlight'>自我觉察</span>和<span class='term'>心理动力学</span>的探索，你可以更好地理解自己的行为模式。建议进行<span class='highlight'>长期自我观察</span>，记录你的情感反应和行为模式。</p>";
+            
+            document.getElementById('psychoContent').innerHTML = report;
+            
+            // 更新防御机制展示
+            const defenseItems = document.querySelectorAll('#defenseGrid .mbti-item');
+            const defenseScores = [scores.T > scores.F ? 2 : 0, scores.I > scores.E ? 2 : 0, scores.J > scores.P ? 1 : 0, scores.N > scores.S ? 2 : 0];
             defenseItems.forEach((item, i) => {
-                if (defenseScores[i] >= 3) {
+                if (defenseScores[i] >= 1) {
                     item.classList.add('active');
                 }
             });
-            
-            // 依恋类型
-            let attachmentText = "";
-            if (attachment <= 3) {
-                attachmentText = "你表现出<span class='term'>安全型依恋</span>的特征。你能够自如地建立亲密关系，同时保持健康的独立空间。你对他人的信任度较高，愿意在关系中展现真实的自我。这是最理想的依恋类型。";
-            } else if (attachment <= 6) {
-                attachmentText = "你呈现出<span class='term'>焦虑型依恋</span>的倾向。你对关系中的不确定性感高度敏感，时常担心被抛弃。你可能在亲密关系中表现出过度依赖或情绪化的行为。建议通过自我觉察来缓解这种焦虑。";
-            } else if (attachment <= 9) {
-                attachmentText = "你表现出<span class='term'>回避型依恋</span>的特点。你倾向于与他人保持距离，回避亲密接触。这可能源于早期关系中的创伤，让你学会了用冷漠来保护自己。";
-            } else {
-                attachmentText = "你呈现出<span class='term'>混乱型依恋</span>的复杂特征。这是依恋系统受到严重干扰的表现，可能与早期的极端创伤经历有关。建议寻求专业心理帮助来处理这些深层创伤。";
-            }
-            document.getElementById('attachmentType').innerHTML = attachmentText;
-            
-            // 潜意识
-            let unconsciousText = "";
-            if (gad7 > phq) {
-                unconsciousText = "你的<span class='highlight'>意识层面</span>被焦虑情绪主导，但在<span class='highlight'>前意识</span>层面，可能存在被<span class='term'>压抑</span>的未完成情绪。你的<span class='highlight'>潜意识</span>正在通过焦虑症状提醒你：某些情感需求未被满足。";
-            } else if (phq > gad7) {
-                unconsciousText = "你的心理能量似乎<span class='highlight'>向内</span>投射。抑郁在精神分析中被称为<span class='term'>向内的愤怒</span>——你可能把对外部的敌意转向了自身。你的潜意识正在经历一场<span class='highlight'>自我攻击</span>。";
-            } else {
-                unconsciousText = "你的<span class='highlight'>意识</span>与<span class='highlight'>潜意识</span>处于持续的冲突中。这是<span class='term'>神经症性焦虑</span>的典型表现——超我与本我之间的战争正在你的内心激烈进行。";
-            }
-            document.getElementById('unconsciousMap').innerHTML = unconsciousText;
-            
-            // 深度精神分析报告
-            let report = "";
-            
-            // 俄狄浦斯情结
-            report += `<p>从你的<span class='highlight'>俄狄浦斯情结(Oedipus Complex)</span>来看，你在早期成长过程中可能存在<span class='term'>三角关系困扰</span>。这种潜意识的冲突至今仍在影响你的人际关系模式，特别是在竞争与亲密的平衡上。</p>`;
-            
-            // 防御机制分析
-            if (defense >= 8) {
-                report += `<p>你高度依赖<span class='term'>防御机制</span>来维持心理平衡。频繁使用<span class='highlight'>否认</span>、<span class='highlight'>投射</span>等初级防御表明，你仍在用<span class='term'>分裂</span>的方式来处理内心冲突。这种防御方式虽然能短期缓解痛苦，但长期来看会阻碍<span class='highlight'>自我</span>的成熟。</p>`;
-            } else if (defense >= 5) {
-                report += `<p>你使用<span class='term'>压抑</span>与<span class='term'>合理化</span>等<span class='highlight'>神经症性防御</span>。这是较为成熟的防御方式，但也意味着你可能在<span class='highlight'>意识</span>层面压抑了过多情绪。建议通过<span class='term'>自由联想</span>来接触这些被压抑的内容。</p>`;
-            } else {
-                report += `<p>你的<span class='term'>防御机制</span>相对成熟，能够较好地<span class='highlight'>升华</span>攻击性冲动。这种能力让你在社交中表现得体，但也需要注意不要过度<span class='highlight'>压抑</span>真实情感，以免陷入<span class='term'>情感隔离</span>。</p>`;
-            }
-            
-            // 躯体化
-            if (body >= 5) {
-                report += `<p>你存在明显的<span class='term'>躯体化(Somatization)</span>倾向。在精神分析中，躯体症状被视为<span class='highlight'>隐喻</span>——你的身体在表达那些<span class='term'>无法用语言</span>表达的情感。这可能与你早期的<span class='highlight'>表达限制</span>有关。`;
-            }
-            
-            // 客体关系
-            report += `<p>从<span class='term'>客体关系</span>角度看，你的<span class='highlight'>内在工作模型</span>可能停留在<span class='term'>部分客体</span>阶段。这意味着你倾向于用<span class='highlight'>分裂</span>的眼光看待他人——要么全好，要么全坏。这种<span class='term'>偏执-分裂位</span>需要通过<span class='highlight'>持续的安全关系</span>来修通。</p>`;
-            
-            // 自恋
-            if (phq > 10) {
-                report += `<p>你可能正在经历<span class='term'>自恋损伤</span>。<span class='highlight'>抑郁</span>常是<span class='term'>自恋</span>无法得到满足后的<span class='highlight'>代偿性反应</span>。你需要重新建立<span class='term'>夸大自体</span>与<span class='highlight'>现实</span>之间的桥梁。</p>`;
-            }
-            
-            // 死亡本能
-            if (answers[13] >= 2) {
-                report += `<p>你的<span class='term'>死亡本能(Death Drive)</span>较为活跃。这在精神分析中指的是一种<span class='highlight'>重复</span>与<span class='term'>回归无机状态</span>的驱力。它可能表现为<span class='highlight'>强迫性重复</span>或自我破坏行为。建议通过<span class='term'>力比多</span>的转化来升华这种能量。</p>`;
-            }
-            
-            // 治疗建议
-            report += `<div class='quote'>"无意识内容必须转化为意识，我们才能获得治愈。" —— 弗洛伊德</div>`;
-            
-            report += `<p><span class='highlight'>治疗建议：</span>你适合<span class='term'>精神分析取向</span>的心理咨询。通过<span class='highlight'>移情</span>与<span class='term'>反移情</span>的工作，修通早期<span class='highlight'>客体关系</span>中的创伤。最终目标是从<span class='term'>偏执-分裂位</span>走向<span class='highlight'>抑郁位</span>，实现<span class='term'>整合</span>。</p>`;
-            
-            document.getElementById('psychoContent').innerHTML = report;
         }
 
         function downloadReport() {
