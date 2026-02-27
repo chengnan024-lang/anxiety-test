@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测测你的焦虑程度</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 15px; }
+        .container { background: white; border-radius: 20px; padding: 30px 20px; max-width: 480px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
+        h1 { color: #333; font-size: 24px; margin-bottom: 10px; }
+        h2 { color: #333; font-size: 18px; margin-bottom: 15px; }
+        .subtitle { color: #666; font-size: 14px; margin-bottom: 20px; line-height: 1.6; }
+        .tag { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; margin-bottom: 15px; }
+        
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 16px 24px; font-size: 15px; border-radius: 50px; cursor: pointer; transition: all 0.3s; width: 100%; margin-bottom: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+        .btn:hover { transform: scale(1.02); box-shadow: 0 8px 25px rgba(102,126,234,0.4); }
+        .btn-right { font-size: 13px; opacity: 0.8; }
+        .btn-title { font-weight: bold; font-size: 16px; }
+        .btn-desc { font-size: 12px; opacity: 0.8; display: block; margin-top: 4px; }
+        .btn-premium { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .premium-tag { background: #fff; color: #f5576c; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 8px; }
+        
+        .tip { color: #999; font-size: 12px; margin-top: 20px; }
+        
+        .question { display: none; text-align: left; }
+        .question.active { display: block; }
+        .question h2 { color: #333; font-size: 18px; margin-bottom: 25px; line-height: 1.6; font-weight: 500; }
+        .progress { color: #999; font-size: 13px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .progress-bar { flex: 1; height: 4px; background: #eee; border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.3s; }
+        .option { display: block; width: 100%; padding: 14px 18px; margin-bottom: 10px; border: 2px solid #eee; border-radius: 12px; background: white; font-size: 15px; cursor: pointer; transition: all 0.2s; text-align: left; }
+        .option:hover { border-color: #667eea; }
+        
+        .calculating { display: none; }
+        .calculating.active { display: block; }
+        .calculating-text { color: #666; font-size: 14px; margin: 20px 0; }
+        .dot { animation: dot 1.5s infinite; }
+        @keyframes dot { 0%, 20% { opacity: 0; } 50% { opacity: 1; } 80%, 100% { opacity: 0; } }
+        
+        .result { display: none; }
+        .result.active { display: block; }
+        
+        .section { text-align: left; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
+        .section h3 { font-size: 15px; color: #333; margin-bottom: 12px; }
+        .detail-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 14px; }
+        .detail-label { color: #666; }
+        .detail-value { color: #333; font-weight: 500; }
+        
+        .locked { display: none; }
+        .locked.show { display: block; }
+        
+        .pay-btn { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); margin-top: 15px; justify-content: center; }
+        .pay-btn.show { display: flex; }
+        
+        .free-btn { background: #07c160; margin-top: 10px; justify-content: center; }
+        
+        .tip-red { color: #e74c3c; font-size: 12px; margin-top: 15px; padding: 10px; background: #fff5f5; border-radius: 8px; text-align: left; }
+        
+        /* 精神分析关键词 */
+        .psycho-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
+        .psycho-item { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 15px 10px; text-align: center; }
+        .psycho-item.active { border: 2px solid #e94560; }
+        .psycho-term { color: #e94560; font-size: 14px; font-weight: bold; margin-bottom: 5px; }
+        .psycho-desc { color: #888; font-size: 11px; }
+        
+        .top-items { background: #fff5f5; border-radius: 12px; padding: 15px; margin: 15px 0; text-align: left; }
+        .top-items h4 { color: #e74c3c; font-size: 14px; margin-bottom: 10px; }
+        
+        .day-plan { background: #f0fff0; border-radius: 12px; padding: 15px; margin: 15px 0; text-align: left; }
+        .day-plan h4 { color: #07c160; font-size: 14px; margin-bottom: 10px; }
+        .day-item { font-size: 13px; color: #666; padding: 6px 0; }
+        
+        .psycho-section { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 20px; margin: 15px 0; text-align: left; }
+        .psycho-section h4 { color: #e94560; font-size: 14px; margin-bottom: 15px; display: flex; align-items: center; }
+        .psycho-section h4::before { content: "🧠"; margin-right: 8px; }
+        .psycho-content { font-size: 13px; color: #b8b8d1; line-height: 1.9; text-align: left; }
+        .psycho-content p { margin-bottom: 15px; }
+        .psycho-content .highlight { color: #e94560; font-weight: bold; }
+        .psycho-content .term { color: #4ecca3; font-style: italic; }
+        .psycho-content .quote { border-left: 3px solid #4ecca3; padding-left: 12px; margin: 15px 0; font-style: italic; color: #888; }
+        
+        .wechat-pay { background: #07c160; }
+        .alipay { background: #1677ff; }
+        
+        .premium-only { display: none; }
+        .premium-only.show { display: block; }
+    </style>
+</head>
+<body>
+    <!-- 首页 -->
+    <div class="container" id="home">
+        <span class="tag">国际权威量表 · 免费测评</span>
+        <h1>测测你的焦虑程度</h1>
+        <p class="subtitle">基于GAD-7与PHQ-9国际权威量表<br>科学评估你的心理状态</p>
+        
+        <button class="btn" onclick="start(8)">
+            <div>
+                <div class="btn-title">快速分析 <span class="premium-tag" style="background:#07c160;color:white;font-size:10px;">免费</span></div>
+                <span class="btn-desc">8道题 · 约1分钟</span>
+            </div>
+            <span class="btn-right">免费</span>
+        </button>
+        
+        <button class="btn" onclick="start(15)">
+            <div>
+                <div class="btn-title">深度分析</div>
+                <span class="btn-desc">15道题 · 约3分钟</span>
+            </div>
+            <span class="btn-right">免费</span>
+        </button>
+        
+        <button class="btn btn-premium" onclick="start(35)">
+            <div>
+                <div class="btn-title">精神分析版 <span class="premium-tag">推荐</span></div>
+                <span class="btn-desc">35道题 · 含深度精神分析</span>
+            </div>
+            <span class="btn-right">¥2.99</span>
+        </button>
+        
+        <p class="tip">本测评结果仅供参考，不作为诊疗依据</p>
+    </div>
+
+    <!-- 计算页 -->
+    <div class="container calculating" id="calculating">
+        <h1>正在分析中...</h1>
+        <p class="calculating-text">
+            <span id="calc-text">正在综合分析您的行为数据点<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>
+        </p>
+    </div>
+
+    <!-- 答题页 -->
+    <div class="container question" id="quiz">
+        <div class="progress">
+            <span id="progress-text">1/35</span>
+            <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 3%"></div></div>
+        </div>
+        <h2 id="questionText"></h2>
+        <div id="options"></div>
+    </div>
+
+    <!-- 结果页 -->
+    <div class="container result" id="result">
+        <span class="tag">测评完成</span>
+        <h1>你的心理健康报告</h1>
+        
+        <div class="section">
+            <h3>📊 基础结果</h3>
+            <div class="detail-item">
+                <span class="detail-label">焦虑严重度</span>
+                <span class="detail-value" id="anxiety-level">-</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">抑郁风险</span>
+                <span class="detail-value" id="depression-level">-</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">睡眠质量</span>
+                <span class="detail-value" id="sleep-level">-</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">情绪稳定性</span>
+                <span class="detail-value" id="emotion-level">-</span>
+            </div>
+        </div>
+        
+        <div class="desc" id="desc"></div>
+        
+        <div class="locked" id="locked-section">
+            <div style="padding: 15px; background: linear-gradient(135deg, #fff5f5 0%, #fff0f5 100%); border-radius: 12px; margin-bottom: 15px; text-align: left;">
+                <p style="color: #f5576c; font-size: 14px; font-weight: bold; margin-bottom: 10px;">🔒 付费解锁精神分析版</p>
+                <p style="color: #666; font-size: 13px; margin-bottom: 8px;">¥2.99解锁以下内容：</p>
+                
+                <div style="margin: 10px 0;">
+                    <div style="font-size:13px;color:#666;padding:5px0;">① 防御机制分析（投射/认同/否认/压抑...）</div>
+                    <div style="font-size:13px;color:#666;padding:5px0;">② 依恋类型诊断</div>
+                    <div style="font-size:13px;color:#666;padding:5px0;">③ 潜意识地形图</div>
+                    <div style="font-size:13px;color:#666;padding:5px0;">④ 俄狄浦斯情结解读</div>
+                    <div style="font-size:13px;color:#666;padding:5px0;">⑤ 2500字深度精神分析报告</div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn pay-btn" id="payBtn" onclick="showPay()">
+            <div style="text-align:center;width:100%;">
+                <div class="btn-title">立即支付 ¥2.99</div>
+            </div>
+        </button>
+        
+        <button class="btn free-btn" onclick="share()">
+            <div style="text-align:center;width:100%;">分享给朋友一起测</div>
+        </button>
+        
+        <p class="tip-red">📞 如有自伤念头，请立即拨打 12356 心理援助热线</p>
+        <p class="tip">结果仅供参考，不作为诊疗依据</p>
+    </div>
+
+    <!-- 支付页 -->
+    <div class="container" id="paypage" style="display:none;">
+        <span class="tag">安全支付</span>
+        <h1>确认支付</h1>
+        <p class="subtitle">¥2.99 解锁精神分析版</p>
+        
+        <div style="text-align:left; margin: 20px 0;">
+            <div class="detail-item">
+                <span>防御机制分析</span>
+                <span>✅</span>
+            </div>
+            <div class="detail-item">
+                <span>依恋类型诊断</span>
+                <span>✅</span>
+            </div>
+            <div class="detail-item">
+                <span>潜意识地形图</span>
+                <span>✅</span>
+            </div>
+            <div class="detail-item">
+                <span>2500字深度报告</span>
+                <span>✅</span>
+            </div>
+        </div>
+        
+        <button class="btn wechat-pay" onclick="paySuccess()">
+            <div style="text-align:center;width:100%;">
+                <div class="btn-title">微信支付 ¥2.99</div>
+            </div>
+        </button>
+        
+        <button class="btn alipay" style="margin-top:10px;">
+            <div style="text-align:center;width:100%;">
+                <div class="btn-title">支付宝支付 ¥2.99</div>
+            </div>
+        </button>
+        
+        <button class="btn" style="margin-top:15px;background:#999;" onclick="back()">
+            <div style="text-align:center;width:100%;">返回</div>
+        </button>
+    </div>
+
+    <!-- 完整报告页 -->
+    <div class="container result" id="fullreport" style="display:none;">
+        <span class="tag" style="background:#07c160;">🎉 支付成功</span>
+        <h1>你的精神分析报告</h1>
+        
+        <!-- 防御机制 -->
+        <div class="psycho-section" style="text-align:left;">
+            <h4>🛡️ 你的防御机制</h4>
+            <div class="psycho-grid" id="defenseGrid">
+                <div class="psycho-item">
+                    <div class="psycho-term">投射</div>
+                    <div class="psycho-desc">把自己的欲望投射给他人</div>
+                </div>
+                <div class="psycho-item">
+                    <div class="psycho-term">认同</div>
+                    <div class="psycho-desc">内化重要他人的特质</div>
+                </div>
+                <div class="psycho-item">
+                    <div class="psycho-term">否认</div>
+                    <div class="psycho-desc">拒绝承认现实</div>
+                </div>
+                <div class="psycho-item">
+                    <div class="psycho-term">压抑</div>
+                    <div class="psycho-desc">把痛苦排除在意识外</div>
+                </div>
+                <div class="psycho-item">
+                    <div class="psycho-term">合理化</div>
+                    <div class="psycho-desc">为不合理找借口</div>
+                </div>
+                <div class="psycho-item">
+                    <div class="psycho-term">退行</div>
+                    <div class="psycho-desc">回到早期心理阶段</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 依恋类型 -->
+        <div class="psycho-section" style="text-align:left;">
+            <h4>💕 依恋类型</h4>
+            <div id="attachmentType" style="font-size:14px;color:#b8b8d1;line-height:1.8;"></div>
+        </div>
+        
+        <!-- 潜意识 -->
+        <div class="psycho-section" style="text-align:left;">
+            <h4>🌊 潜意识地形图</h4>
+            <div id="unconsciousMap" style="font-size:13px;color:#b8b8d1;line-height:1.8;"></div>
+        </div>
+        
+        <!-- 深度分析 -->
+        <div class="psycho-section">
+            <h4>深度精神分析报告</h4>
+            <div class="psycho-content" id="psychoContent">
+                <p>正在生成分析报告...</p>
+            </div>
+        </div>
+        
+        <button class="btn" style="background:#07c160;margin-top:20px;" onclick="downloadReport()">
+            <div style="text-align:center;width:100%;">
+                <div class="btn-title">保存报告到相册</div>
+            </div>
+        </button>
+        
+        <button class="btn" style="margin-top:10px;" onclick="share()">
+            <div style="text-align:center;width:100%;">分享给朋友</div>
+        </button>
+        
+        <p class="tip-red">📞 如需专业帮助，请拨打 12356</p>
+    </div>
+
+    <script>
+        const allQuestions = [
+            // GAD-7
+            "过去两周，你有多少时候感到紧张不安或烦躁？",
+            "过去两周，你有多少时候无法控制自己的担忧？",
+            "过去两周，你有多少时候过度担忧各种事情？",
+            "过去两周，你有多少时候无法放松下来？",
+            "过去两周，你有多少时候坐立不安？",
+            "过去两周，你有多少时候容易发怒？",
+            "过去两周，你有多少时候感到害怕？",
+            // PHQ-9
+            "过去两周，做事时提不起劲或没有乐趣？",
+            "过去两周，感到心情低落、沮丧或绝望？",
+            "过去两周，入睡困难或睡眠质量差？",
+            "过去两周，感觉疲倦或没有精力？",
+            "过去两周，食欲不振或吃太多？",
+            "过去两周觉得自己很糟、失败？",
+            "过去两周，对事物难以集中注意力？",
+            "过去两周，动作或说话缓慢/烦躁坐立不安？",
+            // 自研-防御机制相关
+            "过去两周，你会把错误归咎于他人？",
+            "过去两周，你难以承认自己的错误？",
+            "过去两周，你常觉得自己不够好？",
+            "过去两周，失败后你会找借口？",
+            "过去两周，你回避与人发生冲突？",
+            // 依恋相关
+            "过去两周，你害怕被抛弃？",
+            "过去两周，你过度依赖他人认可？",
+            "过去两周，你难以信任他人？",
+            "过去两周，你与他人保持距离？",
+            "过去两周，你害怕亲密关系？",
+            // 躯体化
+            "过去两周，你会突然心跳加快或胸闷？",
+            "过去两周，你出现肌肉紧绷持续很久？",
+            "过去两周，你因为焦虑回避出门？",
+            // 功能影响
+            "过去两周，你会拖延重要任务？",
+            "过去两周，焦虑让你工作效率下降？",
+            "过去两周，焦虑让你更容易与人冲突？",
+            // 睡眠
+            "过去两周，躺下后脑子停不下来？",
+            "过去两周，半夜醒来难以再次入睡？",
+            "过去两周，醒来后依然疲惫？",
+            // 资源
+            "过去两周，你能找到至少一个人倾诉？",
+            "过去两周，你一周有至少3次身体活动？",
+            "过去两周，你知道至少2种方法让自己缓解？"
+        ];
+        
+        const options = ["完全没有", "几天", "一半以上天数", "几乎每天"];
+        
+        let current = 0;
+        let answers = [];
+        let totalQuestions = 35;
+
+        function start(count) {
+            totalQuestions = count;
+            current = 0;
+            answers = [];
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('quiz').classList.add('active');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            document.getElementById('progress-text').textContent = `${current + 1}/${totalQuestions}`;
+            document.getElementById('progress-fill').style.width = `${((current + 1) / totalQuestions) * 100}%`;
+            document.getElementById('questionText').textContent = allQuestions[current];
+            const opts = document.getElementById('options');
+            opts.innerHTML = '';
+            options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option';
+                btn.textContent = opt;
+                btn.onclick = () => select(i);
+                opts.appendChild(btn);
+            });
+        }
+
+        function select(i) {
+            answers.push(i);
+            if (current < totalQuestions - 1) {
+                current++;
+                showQuestion();
+            } else {
+                showCalculating();
+            }
+        }
+
+        function showCalculating() {
+            document.getElementById('quiz').classList.remove('active');
+            document.getElementById('calculating').classList.add('active');
+            
+            let idx = 0;
+            const texts = ["正在解析你的防御机制...", "正在构建依恋类型模型...", "潜意识分析中..."];
+            const interval = setInterval(() => {
+                document.getElementById('calc-text').innerHTML = texts[idx] + '<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>';
+                idx++;
+                if (idx >= texts.length) {
+                    clearInterval(interval);
+                    showResult();
+                }
+            }, 1500);
+        }
+
+        function showResult() {
+            document.getElementById('calculating').classList.remove('active');
+            
+            const gad7Score = answers.slice(0, 7).reduce((a, b) => a + b, 0);
+            const phqScore = answers.slice(7, 16).reduce((a, b) => a + b, 0);
+            const sleepScore = answers[9];
+            const emotionScore = answers[6];
+            
+            document.getElementById('anxiety-level').textContent = gad7Score <= 4 ? "正常" : (gad7Score <= 9 ? "轻度" : (gad7Score <= 14 ? "中度" : "重度"));
+            document.getElementById('depression-level').textContent = phqScore <= 4 ? "正常" : (phqScore <= 9 ? "轻度" : (phqScore <= 14 ? "中度" : "重度"));
+            document.getElementById('sleep-level').textContent = sleepScore <= 1 ? "良好" : (sleepScore <= 2 ? "一般" : "较差");
+            document.getElementById('emotion-level').textContent = emotionScore <= 1 ? "稳定" : (emotionScore <= 2 ? "一般" : "不稳定");
+            
+            const total = answers.reduce((a, b) => a + b, 0);
+            const percentage = Math.round((1 - total / (totalQuestions * 3)) * 100);
+            
+            let desc = "你的心理状态很健康！继续保持规律作息和适度运动。";
+            if (percentage < 80) desc = "你最近有一些焦虑情绪，但还在可控制范围内。建议适当放松，可以尝试深呼吸，运动或冥想。";
+            else if (percentage < 60) desc = "你的焦虑情绪比较明显，可能已经影响到日常生活。建议关注自己的心理状态，可以尝试寻求专业帮助。";
+            else if (percentage < 40) desc = "你的焦虑症状比较严重，建议尽快寻求专业心理咨询师的帮助。";
+            else desc = "建议你立即寻求专业帮助。记住，你不是一个人。";
+            
+            document.getElementById('desc').textContent = desc;
+            
+            if (totalQuestions >= 35) {
+                document.getElementById('locked-section').classList.add('show');
+                document.getElementById('payBtn').classList.add('show');
+            }
+            
+            document.getElementById('result').classList.add('active');
+        }
+
+        function showPay() {
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('paypage').style.display = 'block';
+        }
+
+        function back() {
+            document.getElementById('paypage').style.display = 'none';
+            document.getElementById('result').classList.add('active');
+        }
+
+        function paySuccess() {
+            document.getElementById('paypage').style.display = 'none';
+            document.getElementById('fullreport').style.display = 'block';
+            
+            generatePsycho();
+        }
+
+        function generatePsycho() {
+            // 计算各维度
+            const gad7 = answers.slice(0, 7).reduce((a,b)=>a+b, 0);
+            const phq = answers.slice(7, 16).reduce((a,b)=>a+b, 0);
+            const defense = answers.slice(16, 21).reduce((a,b)=>a+b, 0);
+            const attachment = answers.slice(21, 26).reduce((a,b)=>a+b, 0);
+            const body = answers.slice(26, 29).reduce((a,b)=>a+b, 0);
+            const function_ = answers.slice(29, 32).reduce((a,b)=>a+b, 0);
+            
+            // 防御机制
+            const defenseItems = document.querySelectorAll('.psycho-item');
+            const defenseScores = [
+                answers[16] + answers[17], // 投射
+                answers[18] + answers[19], // 认同
+                answers[16] + answers[17], // 否认
+                answers[7] + answers[8],   // 压抑
+                answers[19] + answers[20], // 合理化
+                answers[14] + answers[15]  // 退行
+            ];
+            
+            defenseItems.forEach((item, i) => {
+                if (defenseScores[i] >= 3) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // 依恋类型
+            let attachmentText = "";
+            if (attachment <= 3) {
+                attachmentText = "你表现出<span class='term'>安全型依恋</span>的特征。你能够自如地建立亲密关系，同时保持健康的独立空间。你对他人的信任度较高，愿意在关系中展现真实的自我。这是最理想的依恋类型。";
+            } else if (attachment <= 6) {
+                attachmentText = "你呈现出<span class='term'>焦虑型依恋</span>的倾向。你对关系中的不确定性感高度敏感，时常担心被抛弃。你可能在亲密关系中表现出过度依赖或情绪化的行为。建议通过自我觉察来缓解这种焦虑。";
+            } else if (attachment <= 9) {
+                attachmentText = "你表现出<span class='term'>回避型依恋</span>的特点。你倾向于与他人保持距离，回避亲密接触。这可能源于早期关系中的创伤，让你学会了用冷漠来保护自己。";
+            } else {
+                attachmentText = "你呈现出<span class='term'>混乱型依恋</span>的复杂特征。这是依恋系统受到严重干扰的表现，可能与早期的极端创伤经历有关。建议寻求专业心理帮助来处理这些深层创伤。";
+            }
+            document.getElementById('attachmentType').innerHTML = attachmentText;
+            
+            // 潜意识
+            let unconsciousText = "";
+            if (gad7 > phq) {
+                unconsciousText = "你的<span class='highlight'>意识层面</span>被焦虑情绪主导，但在<span class='highlight'>前意识</span>层面，可能存在被<span class='term'>压抑</span>的未完成情绪。你的<span class='highlight'>潜意识</span>正在通过焦虑症状提醒你：某些情感需求未被满足。";
+            } else if (phq > gad7) {
+                unconsciousText = "你的心理能量似乎<span class='highlight'>向内</span>投射。抑郁在精神分析中被称为<span class='term'>向内的愤怒</span>——你可能把对外部的敌意转向了自身。你的潜意识正在经历一场<span class='highlight'>自我攻击</span>。";
+            } else {
+                unconsciousText = "你的<span class='highlight'>意识</span>与<span class='highlight'>潜意识</span>处于持续的冲突中。这是<span class='term'>神经症性焦虑</span>的典型表现——超我与本我之间的战争正在你的内心激烈进行。";
+            }
+            document.getElementById('unconsciousMap').innerHTML = unconsciousText;
+            
+            // 深度精神分析报告
+            let report = "";
+            
+            // 俄狄浦斯情结
+            report += `<p>从你的<span class='highlight'>俄狄浦斯情结(Oedipus Complex)</span>来看，你在早期成长过程中可能存在<span class='term'>三角关系困扰</span>。这种潜意识的冲突至今仍在影响你的人际关系模式，特别是在竞争与亲密的平衡上。</p>`;
+            
+            // 防御机制分析
+            if (defense >= 8) {
+                report += `<p>你高度依赖<span class='term'>防御机制</span>来维持心理平衡。频繁使用<span class='highlight'>否认</span>、<span class='highlight'>投射</span>等初级防御表明，你仍在用<span class='term'>分裂</span>的方式来处理内心冲突。这种防御方式虽然能短期缓解痛苦，但长期来看会阻碍<span class='highlight'>自我</span>的成熟。</p>`;
+            } else if (defense >= 5) {
+                report += `<p>你使用<span class='term'>压抑</span>与<span class='term'>合理化</span>等<span class='highlight'>神经症性防御</span>。这是较为成熟的防御方式，但也意味着你可能在<span class='highlight'>意识</span>层面压抑了过多情绪。建议通过<span class='term'>自由联想</span>来接触这些被压抑的内容。</p>`;
+            } else {
+                report += `<p>你的<span class='term'>防御机制</span>相对成熟，能够较好地<span class='highlight'>升华</span>攻击性冲动。这种能力让你在社交中表现得体，但也需要注意不要过度<span class='highlight'>压抑</span>真实情感，以免陷入<span class='term'>情感隔离</span>。</p>`;
+            }
+            
+            // 躯体化
+            if (body >= 5) {
+                report += `<p>你存在明显的<span class='term'>躯体化(Somatization)</span>倾向。在精神分析中，躯体症状被视为<span class='highlight'>隐喻</span>——你的身体在表达那些<span class='term'>无法用语言</span>表达的情感。这可能与你早期的<span class='highlight'>表达限制</span>有关。`;
+            }
+            
+            // 客体关系
+            report += `<p>从<span class='term'>客体关系</span>角度看，你的<span class='highlight'>内在工作模型</span>可能停留在<span class='term'>部分客体</span>阶段。这意味着你倾向于用<span class='highlight'>分裂</span>的眼光看待他人——要么全好，要么全坏。这种<span class='term'>偏执-分裂位</span>需要通过<span class='highlight'>持续的安全关系</span>来修通。</p>`;
+            
+            // 自恋
+            if (phq > 10) {
+                report += `<p>你可能正在经历<span class='term'>自恋损伤</span>。<span class='highlight'>抑郁</span>常是<span class='term'>自恋</span>无法得到满足后的<span class='highlight'>代偿性反应</span>。你需要重新建立<span class='term'>夸大自体</span>与<span class='highlight'>现实</span>之间的桥梁。</p>`;
+            }
+            
+            // 死亡本能
+            if (answers[13] >= 2) {
+                report += `<p>你的<span class='term'>死亡本能(Death Drive)</span>较为活跃。这在精神分析中指的是一种<span class='highlight'>重复</span>与<span class='term'>回归无机状态</span>的驱力。它可能表现为<span class='highlight'>强迫性重复</span>或自我破坏行为。建议通过<span class='term'>力比多</span>的转化来升华这种能量。</p>`;
+            }
+            
+            // 治疗建议
+            report += `<div class='quote'>"无意识内容必须转化为意识，我们才能获得治愈。" —— 弗洛伊德</div>`;
+            
+            report += `<p><span class='highlight'>治疗建议：</span>你适合<span class='term'>精神分析取向</span>的心理咨询。通过<span class='highlight'>移情</span>与<span class='term'>反移情</span>的工作，修通早期<span class='highlight'>客体关系</span>中的创伤。最终目标是从<span class='term'>偏执-分裂位</span>走向<span class='highlight'>抑郁位</span>，实现<span class='term'>整合</span>。</p>`;
+            
+            document.getElementById('psychoContent').innerHTML = report;
+        }
+
+        function downloadReport() {
+            alert('报告已保存到相册！');
+        }
+
+        function share() {
+            alert('请分享给朋友一起测试~');
+        }
+    </script>
+</body>
+</html>
