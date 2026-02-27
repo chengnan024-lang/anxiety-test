@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>恋爱脑程度测试 | 你恋爱上头了吗？</title>
+    <title>恋爱脑程度测�?| 你恋爱上头了吗？</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -159,7 +159,7 @@
         .feature-box { background: linear-gradient(135deg, #FFF5E6 0%, #FFF8F5 100%); border-radius: 16px; padding: 20px; margin: 20px 0; text-align: left; border: 1px solid #FFE4CC; }
         .feature-box h4 { color: #FF9A62; font-size: 15px; margin-bottom: 14px; font-weight: 600; }
         .feature-item { font-size: 13px; color: #666; padding: 8px 0; display: flex; align-items: center; }
-        .feature-item::before { content: "✓"; color: #FF9A62; margin-right: 10px; font-weight: bold; }
+        .feature-item::before { content: "�?; color: #FF9A62; margin-right: 10px; font-weight: bold; }
         
         .psycho-section { background: linear-gradient(135deg, #2d2d1a 0%, #3d3520 100%); border-radius: 16px; padding: 24px; margin: 20px 0; text-align: left; }
         .psycho-section h4 { color: #FFD699; font-size: 15px; margin-bottom: 16px; font-weight: 600; }
@@ -182,22 +182,22 @@
 <body>
     <!-- 首页 -->
     <div class="container" id="home">
-        <span class="tag">小红书 爆款测试</span>
-        <h1>恋爱脑程度测试</h1>
-        <p class="subtitle">测一测你有多上头<br>了解自己的恋爱投入程度</p>
+        <span class="tag">小红�?爆款测试</span>
+        <h1>恋爱脑程度测�?/h1>
+        <p class="subtitle">测一测你有多上头<br>了解自己的恋爱投入程�?/p>
         
         <button class="btn" onclick="start(8)">
             <div>
                 <div class="btn-title">快速版</div>
-                <span class="btn-desc">8道题 · 约1分钟</span>
+                <span class="btn-desc">8道题 · �?分钟</span>
             </div>
             <span class="btn-right">免费</span>
         </button>
         
         <button class="btn" onclick="start(14)">
             <div>
-                <div class="btn-title">标准版</div>
-                <span class="btn-desc">14道题 · 约3分钟</span>
+                <div class="btn-title">标准�?/div>
+                <span class="btn-desc">14道题 · �?分钟</span>
             </div>
             <span class="btn-right">免费</span>
         </button>
@@ -205,25 +205,24 @@
         <button class="btn btn-premium" onclick="start(22)">
             <div>
                 <div class="btn-title">
-                    深度版
-                    <span class="price-tag">热门</span>
+                    深度�?                    <span class="price-tag">热门</span>
                 </div>
-                <span class="btn-desc">22道题 · 含深度解析</span>
+                <span class="btn-desc">22道题 · 含深度解�?/span>
             </div>
             <span class="btn-right">¥2.99</span>
         </button>
         
-        <p class="tip">本测试仅供参考，不构成情感建议</p>
+        <p class="tip">本测试仅供参考，不构成情感建�?/p>
     </div>
 
-    <!-- 计算页 -->
+    <!-- 计算�?-->
     <div class="container calculating" id="calculating">
         <div class="loading-spinner"></div>
-        <h1>分析中...</h1>
-        <p class="subtitle">正在解析你的恋爱脑指数</p>
+        <h1>分析�?..</h1>
+        <p class="subtitle">正在解析你的恋爱脑指�?/p>
     </div>
 
-    <!-- 答题页 -->
+    <!-- 答题�?-->
     <div class="container question" id="quiz">
         <div class="progress">
             <span id="progress-text">1/22</span>
@@ -233,18 +232,18 @@
         <div id="options"></div>
     </div>
 
-    <!-- 结果页 -->
+    <!-- 结果�?-->
     <div class="container result" id="result">
         <span class="tag">测评完成</span>
         
         <div class="result-emoji" id="emoji">🧠</div>
-        <div class="result-type" id="typeName">轻度恋爱脑</div>
-        <div class="result-desc" id="typeDesc">你恋爱时比较理性</div>
+        <div class="result-type" id="typeName">轻度恋爱�?/div>
+        <div class="result-desc" id="typeDesc">你恋爱时比较理�?/div>
         
         <div class="score-box">
-            <div class="score-title">你的恋爱脑指数</div>
+            <div class="score-title">你的恋爱脑指�?/div>
             <div class="score-num" id="scoreNum">65</div>
-            <div class="score-label" id="scoreLabel">分</div>
+            <div class="score-label" id="scoreLabel">�?/div>
             <div class="level-bar"><div class="level-fill" id="levelBar" style="width:65%;background:linear-gradient(90deg,#FF9A62,#FFB347);"></div></div>
         </div>
         
@@ -259,7 +258,7 @@
                 <span class="detail-value" id="devotionLevel">-</span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">理性程度</span>
+                <span class="detail-label">理性程�?/span>
                 <span class="detail-value" id="rationalLevel">-</span>
             </div>
         </div>
@@ -268,11 +267,11 @@
             <div class="feature-box">
                 <h4>🔒 解锁深度分析</h4>
                 <p style="color:#666;font-size:13px;margin-bottom:14px;">¥2.99解锁全部深度内容</p>
-                <div class="feature-item">恋爱脑程度解读</div>
+                <div class="feature-item">恋爱脑程度解�?/div>
                 <div class="feature-item">上头原因分析</div>
                 <div class="feature-item">潜在风险提示</div>
                 <div class="feature-item">关系平衡建议</div>
-                <div class="feature-item">心理学深度解读</div>
+                <div class="feature-item">心理学深度解�?/div>
             </div>
         </div>
         
@@ -284,19 +283,19 @@
             <span style="text-align:center;width:100%;font-weight:600;">分享给朋友一起测</span>
         </button>
         
-        <p class="tip-red">💡 结果仅供参考，不作为情感建议</p>
+        <p class="tip-red">💡 结果仅供参考，不作为情感建�?/p>
     </div>
 
-    <!-- 支付页 -->
+    <!-- 支付�?-->
     <div class="container" id="paypage" style="display:none;">
         <span class="tag">安全支付</span>
         <h1>确认支付</h1>
-        <p class="subtitle">¥2.99 解锁深度版</p>
+        <p class="subtitle">¥2.99 解锁深度�?/p>
         
         <div class="feature-box">
-            <div class="detail-item"><span>恋爱脑深度解读</span><span>✓</span></div>
-            <div class="detail-item"><span>上头原因分析</span><span>✓</span></div>
-            <div class="detail-item"><span>心理学解读</span><span>✓</span></div>
+            <div class="detail-item"><span>恋爱脑深度解�?/span><span>�?/span></div>
+            <div class="detail-item"><span>上头原因分析</span><span>�?/span></div>
+            <div class="detail-item"><span>心理学解�?/span><span>�?/span></div>
         </div>
         
         <button class="btn wechat-pay" onclick="paySuccess()">
@@ -304,7 +303,7 @@
         </button>
         
         <button class="btn alipay" style="margin-top:10px;">
-            <span style="text-align:center;width:100%;font-weight:600;">支付宝支付 ¥2.99</span>
+            <span style="text-align:center;width:100%;font-weight:600;">支付宝支�?¥2.99</span>
         </button>
         
         <button class="btn" style="margin-top:16px;background:#f5f5f5;color:#666;border:none;" onclick="back()">
@@ -312,18 +311,18 @@
         </button>
     </div>
 
-    <!-- 完整报告页 -->
+    <!-- 完整报告�?-->
     <div class="container result" id="fullreport" style="display:none;">
         <span class="tag" style="background:linear-gradient(135deg, #07c160 0%, #06ad56 100%);">🎉 支付成功</span>
         
         <div class="result-emoji" id="emoji2">🧠</div>
-        <div class="result-type" id="typeName2">轻度恋爱脑</div>
-        <div class="result-desc" id="typeDesc2">你恋爱时比较理性</div>
+        <div class="result-type" id="typeName2">轻度恋爱�?/div>
+        <div class="result-desc" id="typeDesc2">你恋爱时比较理�?/div>
         
         <div class="score-box">
-            <div class="score-title">你的恋爱脑指数</div>
+            <div class="score-title">你的恋爱脑指�?/div>
             <div class="score-num" id="scoreNum2">65</div>
-            <div class="score-label">分</div>
+            <div class="score-label">�?/div>
         </div>
         
         <!-- 上头原因 -->
@@ -344,33 +343,32 @@
             <div class="psycho-content" id="adviceAnalysis"></div>
         </div>
         
-        <!-- 心理学 -->
+        <!-- 心理�?-->
         <div class="psycho-section">
-            <h4>🧠 心理学深度解读</h4>
+            <h4>🧠 心理学深度解�?/h4>
             <div class="psycho-content" id="psychoContent"></div>
         </div>
         
         <button class="btn wechat-pay" style="margin-top:20px;" onclick="downloadReport()">
-            <span style="text-align:center;width:100%;font-weight:600;">保存报告到相册</span>
+            <span style="text-align:center;width:100%;font-weight:600;">保存报告到相�?/span>
         </button>
         
         <button class="btn" style="margin-top:10px;background:#f5f5f5;color:#333;border:none;" onclick="share()">
-            <span style="text-align:center;width:100%;font-weight:600;">分享给朋友</span>
+            <span style="text-align:center;width:100%;font-weight:600;">分享给朋�?/span>
         </button>
         
-        <p class="tip">结果仅供参考，不作为诊断依据</p>
+        <p class="tip">结果仅供参考，不作为诊断依�?/p>
     </div>
 
     <script>
         const questions = [
             // 投入程度
             "恋爱后，你每天花多少时间想对方？",
-            "你会经常查看对方的社交动态吗？",
+            "你会经常查看对方的社交动态吗�?,
             "对方不回消息时，你会焦虑吗？",
-            "你愿意为对方付出多少？",
-            // 理性程度
-            "恋爱中你能保持理性吗？",
-            "你会无条件原谅对方吗？",
+            "你愿意为对方付出多少�?,
+            // 理性程�?            "恋爱中你能保持理性吗�?,
+            "你会无条件原谅对方吗�?,
             "恋爱影响你的生活/工作吗？",
             // 上头行为
             "你会为了对方放弃机会吗？",
@@ -378,52 +376,51 @@
             "你会经常问\"你爱我吗\"吗？",
             // 依赖程度
             "分手后你会很难走出来吗？",
-            "你恋爱后疏远朋友了吗？",
-            "你经常幻想和对方的未来吗？",
+            "你恋爱后疏远朋友了吗�?,
+            "你经常幻想和对方的未来吗�?,
             // 深入
             "恋爱时你更看重感觉还是合适？",
             "你会被\"对我好\"打动吗？",
-            "你愿意闪婚吗？",
+            "你愿意闪婚吗�?,
             "恋爱中你最看重什么？",
-            "你有过\"恋爱脑\"的时刻吗？",
+            "你有过\"恋爱脑\"的时刻吗�?,
             "你认为恋爱需要理性还是感性？",
-            "你会被星座/八字匹配影响吗？",
-            "你恋爱时会失去自我吗？",
+            "你会被星�?八字匹配影响吗？",
+            "你恋爱时会失去自我吗�?,
             "你相信\"命中注定\"吗？"
         ];
         
         const options = [
-            ["每小时都在想", "偶尔想", "很少想"],
+            ["每小时都在想", "偶尔�?, "很少�?],
             ["经常查看", "偶尔看看", "从不"],
             ["非常焦虑", "有点焦虑", "不会"],
-            ["倾尽所有", "适度付出", "保留自己"],
-            ["完全可以", "有时感性", "完全感性"],
-            ["会的", "看情况", "不会"],
+            ["倾尽所�?, "适度付出", "保留自己"],
+            ["完全可以", "有时感�?, "完全感�?],
+            ["会的", "看情�?, "不会"],
             ["严重影响", "有点影响", "不受影响"],
-            ["会的", "看情况", "不会"],
-            ["会", "偶尔", "不会"],
-            ["经常问", "偶尔", "从不"],
-            ["非常难", "一般", "很快"],
+            ["会的", "看情�?, "不会"],
+            ["�?, "偶尔", "不会"],
+            ["经常�?, "偶尔", "从不"],
+            ["非常�?, "一�?, "很快"],
             ["是的，疏远了", "偶尔", "没有"],
             ["经常幻想", "偶尔", "很少"],
-            ["感觉", "合适", "都重要"],
-            ["会", "看情况", "不会"],
-            ["愿意", "看感觉", "不愿意"],
-            ["颜值", "对我好", "聊得来"],
+            ["感觉", "合�?, "都重�?],
+            ["�?, "看情�?, "不会"],
+            ["愿意", "看感�?, "不愿�?],
+            ["颜�?, "对我�?, "聊得�?],
             ["有，太上头了", "有过", "没有"],
-            ["感性", "理性", "平衡"],
-            ["会", "有点", "完全不信"],
-            ["会", "偶尔", "不会"],
-            ["相信", "一半一半", "不相信"]
+            ["感�?, "理�?, "平衡"],
+            ["�?, "有点", "完全不信"],
+            ["�?, "偶尔", "不会"],
+            ["相信", "一半一�?, "不相�?]
         ];
         
-        // 恋爱脑等级
-        const brainLevels = {
-           0: { name: "理性王者", emoji: "🧊", desc: "你恋爱时超级理性！不会被感情冲昏头脑，能很好地平衡爱情和生活。", color: "#87CEEB" },
-           30: { name: "轻度恋爱脑", emoji: "🧠", desc: "你恋爱时比较理性，能保持自我，不会过度沉迷。", color: "#90EE90" },
-           60: { name: "中度恋爱脑", emoji: "💕", desc: "你恋爱时会有些上头，但还能保持基本理性。", color: "#FFB347" },
-           80: { name: "重度恋爱脑", emoji: "💘", desc: "你恋爱时非常上头！眼里只有对方，容易失去自我。", color: "#FF6B6B" },
-           100: { name: "恋爱脑晚期", emoji: "💔", desc: "你恋爱完全上头！建议适当保持理性，多关注自己的生活。", color: "#DC143C" }
+        // 恋爱脑等�?        const brainLevels = {
+           0: { name: "理性王�?, emoji: "🧊", desc: "你恋爱时超级理性！不会被感情冲昏头脑，能很好地平衡爱情和生活�?, color: "#87CEEB" },
+           30: { name: "轻度恋爱�?, emoji: "🧠", desc: "你恋爱时比较理性，能保持自我，不会过度沉迷�?, color: "#90EE90" },
+           60: { name: "中度恋爱�?, emoji: "💕", desc: "你恋爱时会有些上头，但还能保持基本理性�?, color: "#FFB347" },
+           80: { name: "重度恋爱�?, emoji: "💘", desc: "你恋爱时非常上头！眼里只有对方，容易失去自我�?, color: "#FF6B6B" },
+           100: { name: "恋爱脑晚�?, emoji: "💔", desc: "你恋爱完全上头！建议适当保持理性，多关注自己的生活�?, color: "#DC143C" }
         };
         
         let current = 0;
@@ -459,7 +456,7 @@
 
         function select(i) {
             answers.push(i);
-            // 0=2分,1=1分,2=0分 (越后面的选项越理性)
+            // 0=2�?1=1�?2=0�?(越后面的选项越理�?
             score += (2 - i) * (10 / totalQuestions) * 3;
             
             if (current < totalQuestions - 1) {
@@ -500,9 +497,9 @@
             document.getElementById('levelBar').style.background = result.color;
             
             // 维度分析
-            const obsession = score > 60 ? "高" : (score > 30 ? "中" : "低");
-            const devotion = answers.slice(0,4).reduce((a,b)=>a+(2-b),0) > 4 ? "高" : "中";
-            const rational = score < 40 ? "高" : (score < 70 ? "中" : "低");
+            const obsession = score > 60 ? "�? : (score > 30 ? "�? : "�?);
+            const devotion = answers.slice(0,4).reduce((a,b)=>a+(2-b),0) > 4 ? "�? : "�?;
+            const rational = score < 40 ? "�? : (score < 70 ? "�? : "�?);
             
             document.getElementById('obsessionLevel').textContent = obsession;
             document.getElementById('devotionLevel').textContent = devotion;
@@ -545,47 +542,46 @@
             // 上头原因
             let reason = "";
             if (score >= 80) {
-                reason = "<p>你属于<span class='highlight'>情感驱动型</span>。你容易被对方的<span class='term'>情绪价值</span>所吸引，一旦心动就会全身心投入。这种类型的恋爱脑往往源于<span class='highlight'>童年缺乏安全感</span>，成年后通过恋爱来弥补内心的空洞。</p>";
+                reason = "<p>你属�?span class='highlight'>情感驱动�?/span>。你容易被对方的<span class='term'>情绪价�?/span>所吸引，一旦心动就会全身心投入。这种类型的恋爱脑往往源于<span class='highlight'>童年缺乏安全�?/span>，成年后通过恋爱来弥补内心的空洞�?/p>";
             } else if (score >= 50) {
-                reason = "<p>你属于<span class='highlight'>理性与感性并存</span>。你会在恋爱中保持一定理性，但也会被浪漫冲昏头脑。你的恋爱脑主要来自<span class='term'>多巴胺</span>的分泌带来的快感，让你享受<span class='highlight'>心跳</span>的感觉。</p>";
+                reason = "<p>你属�?span class='highlight'>理性与感性并�?/span>。你会在恋爱中保持一定理性，但也会被浪漫冲昏头脑。你的恋爱脑主要来自<span class='term'>多巴�?/span>的分泌带来的快感，让你享�?span class='highlight'>心跳</span>的感觉�?/p>";
             } else {
-                reason = "<p>你属于<span class='highlight'>理性分析型</span>。你不会被感情冲昏头脑，会用理性眼光看待恋爱。这种特质让你在恋爱中<span class='term'>较少受伤</span>，但也可能因为过于理性而<span class='highlight'>错过真爱</span>。</p>";
+                reason = "<p>你属�?span class='highlight'>理性分析型</span>。你不会被感情冲昏头脑，会用理性眼光看待恋爱。这种特质让你在恋爱�?span class='term'>较少受伤</span>，但也可能因为过于理性�?span class='highlight'>错过真爱</span>�?/p>";
             }
             document.getElementById('reasonAnalysis').innerHTML = reason;
             
             // 风险
             let risk = "";
             if (score >= 80) {
-                risk = "⚠️ 风险提示：你容易在恋爱中失去自我，可能忽视家人朋友。建议保持独立社交圈，理性看待感情。";
+                risk = "⚠️ 风险提示：你容易在恋爱中失去自我，可能忽视家人朋友。建议保持独立社交圈，理性看待感情�?;
             } else if (score >= 50) {
-                risk = "⚠️ 风险提示：适度上头是正常的，但要注意不要影响正常工作生活。建议保持理性判断。";
+                risk = "⚠️ 风险提示：适度上头是正常的，但要注意不要影响正常工作生活。建议保持理性判断�?;
             } else {
-                risk = "✅ 风险较低：你比较理性，但也要学会在适当时候放松，享受恋爱的心动感觉。";
+                risk = "�?风险较低：你比较理性，但也要学会在适当时候放松，享受恋爱的心动感觉�?;
             }
             document.getElementById('riskAnalysis').innerHTML = risk;
             
             // 建议
             let advice = "";
             if (score >= 80) {
-                advice = "<p>1. <span class='highlight'>建立独立社交圈</span>，不要把全部精力放在恋人身上<br>2. <span class='term'>设置冷静期</span>，重要决定先放24小时再处理<br>3. <span class='highlight'>保持兴趣爱好</span>，不要为了恋爱放弃自我成长<br>4. <span class='term'>学会独处</span>，享受单身时的自由时光</p>";
+                advice = "<p>1. <span class='highlight'>建立独立社交�?/span>，不要把全部精力放在恋人身上<br>2. <span class='term'>设置冷静�?/span>，重要决定先�?4小时再处�?br>3. <span class='highlight'>保持兴趣爱好</span>，不要为了恋爱放弃自我成�?br>4. <span class='term'>学会独处</span>，享受单身时的自由时�?/p>";
             } else if (score >= 50) {
-                advice = "<p>1. <span class='highlight'>享受恋爱</span>的同时保持基本理性<br>2. <span class='term'>定期反思</span>自己的感情状态<br>3. <span class='highlight'>保持朋友圈</span>，不要忽视朋友<br>4. <span class='term'>沟通很重要</span>，有想法及时表达</p>";
+                advice = "<p>1. <span class='highlight'>享受恋爱</span>的同时保持基本理�?br>2. <span class='term'>定期反�?/span>自己的感情状�?br>3. <span class='highlight'>保持朋友�?/span>，不要忽视朋�?br>4. <span class='term'>沟通很重要</span>，有想法及时表达</p>";
             } else {
-                advice = "<p>1. <span class='highlight'>适当感性</span>一点，享受心跳的感觉<br>2. <span class='term'>不要过于苛刻</span>，给感情一些空间<br>3. <span class='highlight'>相信直觉</span>，有时候跟着感觉走<br>4. <span class='term'>放下防备</span>，勇敢接受爱</p>";
+                advice = "<p>1. <span class='highlight'>适当感�?/span>一点，享受心跳的感�?br>2. <span class='term'>不要过于苛刻</span>，给感情一些空�?br>3. <span class='highlight'>相信直觉</span>，有时候跟着感觉�?br>4. <span class='term'>放下防备</span>，勇敢接受爱</p>";
             }
             document.getElementById('adviceAnalysis').innerHTML = advice;
             
-            // 心理学深度
-            let psycho = "";
+            // 心理学深�?            let psycho = "";
             if (score >= 80) {
-                psycho = "<p>从<span class='highlight'>精神分析</span>角度，你的恋爱脑源于<span class='term'>早期依恋创伤</span>。童年可能缺乏稳定的<span class='highlight'>情感照顾者</span>，导致成年后对亲密关系有过度的<span class='term'>情感需求</span>。这在心理学上称为<span class='highlight'>焦虑型依恋</span>的延伸。</p><p>你把恋人当作<span class='term'>理想父母</span>的替身，期望从对方身上获得<span class='highlight'>童年缺失的爱</span>。这种模式容易导致<span class='term'>恋爱中的过度依赖</span>，需要在<span class='highlight'>自我成长</span>中疗愈。</p>";
+                psycho = "<p>�?span class='highlight'>精神分析</span>角度，你的恋爱脑源于<span class='term'>早期依恋创伤</span>。童年可能缺乏稳定的<span class='highlight'>情感照顾�?/span>，导致成年后对亲密关系有过度�?span class='term'>情感需�?/span>。这在心理学上称�?span class='highlight'>焦虑型依�?/span>的延伸�?/p><p>你把恋人当作<span class='term'>理想父母</span>的替身，期望从对方身上获�?span class='highlight'>童年缺失的爱</span>。这种模式容易导�?span class='term'>恋爱中的过度依赖</span>，需要在<span class='highlight'>自我成长</span>中疗愈�?/p>";
             } else if (score >= 50) {
-                psycho = "<p>从<span class='highlight'>神经生物学</span>角度，恋爱时大脑会分泌大量<span class='term'>多巴胺</span>和<span class='highlight'>催产素</span>，让你产生愉悦感和依恋感。你的恋爱脑是<span class='term'>正常的生理反应</span>，但需要与<span class='highlight'>理性思维</span>平衡。</p><p>你的依恋模式属于<span class='term'>安全型</span>与<span class='highlight'>焦虑型</span>之间，能够享受亲密但保持一定独立性。这是<span class='highlight'>健康的恋爱状态</span>。</p>";
+                psycho = "<p>�?span class='highlight'>神经生物�?/span>角度，恋爱时大脑会分泌大�?span class='term'>多巴�?/span>�?span class='highlight'>催产�?/span>，让你产生愉悦感和依恋感。你的恋爱脑�?span class='term'>正常的生理反�?/span>，但需要与<span class='highlight'>理性思维</span>平衡�?/p><p>你的依恋模式属于<span class='term'>安全�?/span>�?span class='highlight'>焦虑�?/span>之间，能够享受亲密但保持一定独立性。这�?span class='highlight'>健康的恋爱状�?/span>�?/p>";
             } else {
-                psycho = "<p>从<span class='highlight'>认知心理学</span>角度，你擅长用<span class='term'>理性思维</span>处理情感问题。这可能是一种<span class='highlight'>防御机制</span>——通过理性化来<span class='term'>保护自己</span>不受情感伤害。</p><p>但过度的理性可能导致<span class='highlight'>情感隔离</span>，无法真正享受亲密关系。建议<span class='term'>适当放下防备</span>，给感情一些<span class='highlight'>自由生长</span>的空间。</p>";
+                psycho = "<p>�?span class='highlight'>认知心理�?/span>角度，你擅长�?span class='term'>理性思维</span>处理情感问题。这可能是一�?span class='highlight'>防御机制</span>——通过理性化�?span class='term'>保护自己</span>不受情感伤害�?/p><p>但过度的理性可能导�?span class='highlight'>情感隔离</span>，无法真正享受亲密关系。建�?span class='term'>适当放下防备</span>，给感情一�?span class='highlight'>自由生长</span>的空间�?/p>";
             }
             
-            psycho += "<p style='margin-top:15px;'><span class='highlight'>分析师说：</span>恋爱脑不是病，<span class='term'>健康的恋爱</span>是感性理性并存。学会<span class='highlight'>自我觉察</span>，在需要感性时感性，需要理性时理性。</p>";
+            psycho += "<p style='margin-top:15px;'><span class='highlight'>分析师说�?/span>恋爱脑不是病�?span class='term'>健康的恋�?/span>是感性理性并存。学�?span class='highlight'>自我觉察</span>，在需要感性时感性，需要理性时理性�?/p>";
             
             document.getElementById('psychoContent').innerHTML = psycho;
         }
