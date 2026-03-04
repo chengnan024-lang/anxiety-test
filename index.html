@@ -1,203 +1,40 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>恋爱关系焦虑测评 - 专业心理评估工具</title>
-  
-  <!-- SEO优化 -->
-  <meta name="description" content="专业的恋爱关系焦虑测评工具，22道题目科学评估你的关系焦虑水平。基于依恋理论，提供个性化深度分析与调整建议，帮助你理解自己在亲密关系中的情绪模式。" />
-  <meta name="keywords" content="恋爱焦虑,关系焦虑,心理测评,依恋理论,亲密关系,情绪管理,心理健康,焦虑型依恋,安全型依恋" />
-  <meta name="author" content="恋爱关系焦虑测评" />
-  
-  <!-- Open Graph / 社交媒体卡片 -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="恋爱关系焦虑测评 - 专业心理评估工具" />
-  <meta property="og:description" content="22道题目科学评估你的关系焦虑水平，基于依恋理论提供个性化深度分析与调整建议。" />
-  <meta property="og:url" content="https://anxiety-test.example.com" />
-  <!-- 待替换：og:image 需要在上线前添加实际的预览图片URL -->
-  
-  <!-- Twitter卡片 -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="恋爱关系焦虑测评 - 专业心理评估工具" />
-  <meta name="twitter:description" content="22道题目科学评估你的关系焦虑水平，基于依恋理论提供个性化深度分析与调整建议。" />
-  <link rel="stylesheet" href="design-system.css">
+  <title>恋爱关系焦虑测评</title>
   <style>
     body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;margin:0;color:#222}
     .container{max-width:680px;margin:0 auto;padding:20px}
-    .card{background:#fff;border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-md);transition:var(--transition-normal)}
+    .card{background:#fff;border-radius:16px;padding:20px;box-shadow:0 6px 24px rgba(0,0,0,.06)}
     h1{font-size:24px;margin:8px 0 10px}
     .sub{color:#666;font-size:14px;line-height:1.7}
     .btn{width:100%;border:none;border-radius:12px;padding:14px 16px;font-size:16px;font-weight:700;cursor:pointer}
-    .btn-primary{background:var(--color-primary);color:#fff}
-    .btn-primary:hover{background:#1d4ed8;transform:translateY(-1px);box-shadow:var(--shadow-hover)}
-    .btn-primary:active{transform:scale(0.98)}
-    .btn-ghost{background:#f1f3f5;color:#374151;border:1px solid var(--color-border)}
-    .btn-ghost:hover{background:#e5e7eb;border-color:#d1d5db}
-    .btn-ghost:active{transform:scale(0.98)}
+    .btn-primary{background:#111;color:#fff}
+    .btn-ghost{background:#f2f3f5;color:#333}
     .mt{margin-top:12px}
     .question-section,.result,#fullreport{display:none}
     .progress{display:flex;align-items:center;gap:10px;font-size:13px;color:#666;margin-bottom:12px}
-    .bar{flex:1;height:8px;background:var(--color-border);border-radius:99px;overflow:hidden}
-    .fill{height:100%;width:0;background:linear-gradient(90deg, var(--color-primary), #1d4ed8);transition:width 0.3s ease}
+    .bar{flex:1;height:8px;background:#eceff3;border-radius:99px;overflow:hidden}
+    .fill{height:100%;width:0;background:#111}
     #question{font-size:20px;line-height:1.6;margin:14px 0 18px}
-    .option-btn{width:100%;text-align:left;border:1px solid var(--color-border);background:#fff;padding:12px 14px;border-radius:var(--radius-md);margin-bottom:10px;cursor:pointer;transition:var(--transition-fast)}
-    .option-btn:hover{border-color:var(--color-primary);background:var(--color-primary-bg);transform:translateY(-1px)}
-    .option-btn:active{transform:scale(0.98)}
-    .option-btn.selected{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
+    .option-btn{width:100%;text-align:left;border:1px solid #e5e7eb;background:#fff;padding:12px 14px;border-radius:10px;margin-bottom:10px;cursor:pointer}
+    .option-btn:hover{border-color:#111}
     .badge{display:inline-block;background:#eef2ff;color:#374151;border-radius:999px;padding:5px 10px;font-size:12px}
-    .score{font-size:48px;font-weight:800;margin:8px 0;color:var(--color-primary)}
+    .score{font-size:42px;font-weight:800;margin:6px 0}
     .line{border-top:1px solid #eee;margin:14px 0}
     .small{font-size:13px;color:#666;line-height:1.8}
-    .section-title{font-size:16px;font-weight:600;margin:16px 0 10px;color:#1f2937}
+    .section-title{font-weight:700;margin:12px 0 8px}
     .chart-wrap{margin:10px 0 4px}
-    .chart-row{margin:14px 0}
-    .chart-head{display:flex;justify-content:space-between;font-size:14px;color:#374151;margin-bottom:8px;font-weight:500}
-    .chart-label{flex:1}
-    .chart-value{font-weight:600;color:var(--color-primary)}
-    .chart-track{height:12px;background:#f1f3f5;border-radius:99px;overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,0.05)}
-    .chart-fill{height:100%;width:0;border-radius:99px;transition:width .5s cubic-bezier(0.4, 0, 0.2, 1)}
-    
-    
-    
-    .c1{background:linear-gradient(90deg,#ef4444,#dc2626)}
-    .c2{background:linear-gradient(90deg,#f97316,#ea580c)}
-    .c3{background:linear-gradient(90deg,#10b981,#059669)}
-    .c4{background:linear-gradient(90deg,#3b82f6,#2563eb)}
-
-    /* 免责声明样式 */
-    .disclaimer{
-      margin-top:24px;
-      padding-top:16px;
-      border-top:1px solid #e5e7eb;
-    }
-    .disclaimer-text{
-      font-size:12px;
-      color:#6b7280;
-      line-height:1.7;
-      margin:8px 0;
-    }
-    .disclaimer-links{
-      font-size:12px;
-      color:#6b7280;
-      margin:8px 0 0;
-      text-align:center;
-    }
-    .disclaimer-links a{
-      color:#2563eb;
-      text-decoration:none;
-    }
-    .disclaimer-links a:hover{
-      text-decoration:underline;
-    }
-
-    /* 完整报告页排版优化 */
-    #fullreport{line-height:1.75}
-    #fullreport .section-title{
-      font-size:18px;
-      font-weight:700;
-      margin:24px 0 12px;
-      color:#111;
-      padding-left:10px;
-      border-left:4px solid var(--color-primary);
-    }
-    #fullreport .small{
-      font-size:15px;
-      line-height:1.9;
-      color:#374151;
-      margin-bottom:16px;
-    }
-    #fullreport .small p{
-      margin:12px 0;
-    }
-    
-    /* 建议项样式（每个建议前加图标） */
-    .advice-item{
-      display:flex;
-      align-items:flex-start;
-      margin:10px 0;
-      padding:10px;
-      background:#f9fafb;
-      border-radius:var(--radius-md);
-      border-left:3px solid var(--color-primary);
-    }
-    .advice-icon{
-      font-size:18px;
-      margin-right:10px;
-      flex-shrink:0;
-    }
-    .advice-text{
-      flex:1;
-      line-height:1.8;
-    }
-    .advice-title{
-      font-weight:600;
-      color:#111;
-      margin-bottom:4px;
-    }
-    .advice-desc{
-      font-size:14px;
-      color:#6b7280;
-    }
-
-        /* 完整报告页排版优化 */
-    #fullreport{line-height:1.75}
-    #fullreport .section-title{
-      font-size:18px;
-      font-weight:700;
-      margin:24px 0 12px;
-      color:#111;
-      padding-left:10px;
-      border-left:4px solid var(--color-primary);
-    }
-    #fullreport .small{
-      font-size:15px;
-      line-height:1.9;
-      color:#374151;
-      margin-bottom:16px;
-    }
-    #fullreport .small p{
-      margin:12px 0;
-    }
-    
-    /* 建议项样式（每个建议前加图标） */
-    .advice-item{
-      display:flex;
-      align-items:flex-start;
-      margin:10px 0;
-      padding:10px;
-      background:#f9fafb;
-      border-radius:var(--radius-md);
-      border-left:3px solid var(--color-primary);
-    }
-    .advice-icon{
-      font-size:18px;
-      margin-right:10px;
-      flex-shrink:0;
-    }
-    .advice-text{
-      flex:1;
-      line-height:1.8;
-    }
-    .advice-title{
-      font-weight:600;
-      color:#111;
-      margin-bottom:4px;
-    }
-    .advice-desc{
-      font-size:14px;
-      color:#6b7280;
-    }
-
-        /* 移动端适配 */
-    @media (max-width: 640px) {
-      .container{padding:var(--space-sm)}
-      .card{padding:var(--space-md)}
-      h1{font-size:var(--font-size-xl)}
-      #question{font-size:var(--font-size-lg)}
-      .option-btn{font-size:var(--font-size-sm);padding:10px 12px}
-      .btn{font-size:var(--font-size-sm)}
-    }
+    .chart-row{margin:10px 0}
+    .chart-head{display:flex;justify-content:space-between;font-size:13px;color:#444;margin-bottom:6px}
+    .chart-track{height:10px;background:#eef1f5;border-radius:99px;overflow:hidden}
+    .chart-fill{height:100%;width:0;border-radius:99px;transition:width .45s ease}
+    .c1{background:linear-gradient(90deg,#FF8A8A,#FF6B6B)}
+    .c2{background:linear-gradient(90deg,#FFCC80,#FFB74D)}
+    .c3{background:linear-gradient(90deg,#80CBC4,#4DB6AC)}
+    .c4{background:linear-gradient(90deg,#90CAF9,#64B5F6)}
   </style>
 </head>
 <body>
@@ -206,20 +43,9 @@
     <div class="card home">
       <span class="badge">关系测评</span>
       <h1>恋爱关系焦虑测评</h1>
-      <p class="sub">拍下后自动发货链接,打开即可直接做完整版。测评约 8-12 分钟,仅用于自我觉察与关系优化。</p>
+      <p class="sub">拍下后自动发货链接，打开即可直接做完整版。测评约 8-12 分钟，仅用于自我觉察与关系优化。</p>
       <button class="btn btn-primary mt" onclick="start('deep')">开始测评</button>
       <div id="deep-indicator" class="small mt" style="display:none;">已进入完整版测评</div>
-      
-      <!-- 免责声明 -->
-      <div class="disclaimer">
-        <p class="disclaimer-text">
-          ⚠️ <strong>免责声明：</strong>本测评基于心理学研究设计,仅供自我觉察与关系优化参考,不构成医疗诊断、心理咨询或专业治疗建议。如您感到明显的焦虑、抑郁或情绪困扰,请及时寻求专业心理咨询师或医疗机构帮助。
-        </p>
-        <p class="disclaimer-links">
-          <a href="privacy.html" target="_blank">隐私政策</a> · 
-          <a href="mailto:chengnan025@gmail.com">联系我们</a>
-        </p>
-      </div>
     </div>
 
     <div class="card question-section">
@@ -234,7 +60,7 @@
     <div class="card result">
       <span class="badge">测评结果</span>
       <h2 id="typeName">-</h2>
-      <div id="typeEmoji" style="font-size:36px;margin:8px 0;">🌿</div>
+      <div id="typeEmoji" style="font-size:28px;">🌿</div>
       <div class="score"><span id="scoreNum">0</span> 分</div>
       <p id="typeDesc" class="sub">-</p>
 
@@ -276,6 +102,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=2026030321"></script>
+  <script src="script.js"></script>
 </body>
 </html>
