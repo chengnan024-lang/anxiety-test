@@ -97,17 +97,17 @@ function showResult() {
     document.getElementById('typeEmoji').textContent = type.emoji;
     document.getElementById('typeDesc').textContent = type.desc;
     let analysis = '';
-    if(scores.obsession>=15) analysis+='<p><strong>投入强度:</strong> 关系中表现出较高的关注度和投入频率。</p>';
-    else if(scores.obsession>=8) analysis+='<p><strong>投入强度:</strong> 关系中有一定的关注和投入，处于中等水平。</p>';
-    else analysis+='<p><strong>投入强度:</strong> 关系中能保持适度的关注，不过度投入。</p>';
-    if(scores.anxiety>=12) analysis+='<p><strong>情绪稳定性:</strong> 容易因关系波动而产生情绪起伏。</p>';
-    else if(scores.anxiety>=6) analysis+='<p><strong>情绪稳定性:</strong> 偶尔会因关系问题而情绪波动。</p>';
-    else analysis+='<p><strong>情绪稳定性:</strong> 情绪较为稳定，不易受关系波动影响。</p>';
-    if(scores.dependence>=10) analysis+='<p><strong>自主性:</strong> 在关系中可能会降低自我需求来维持和谐。</p>';
-    else if(scores.dependence>=5) analysis+='<p><strong>自主性:</strong> 在关系中偶尔会妥协自己的需求。</p>';
-    else analysis+='<p><strong>自主性:</strong> 在关系中能较好地保持自我和边界。</p>';
-    if(scores.rational>=6) analysis+='<p><strong>理性程度:</strong> 关系对日常生活的影响相对较小。</p>';
-    else analysis+='<p><strong>理性程度:</strong> 能在关系中保持理性和生活平衡。</p>';
+    if(scores.obsession>=15) analysis+='<p><strong>敏感程度:</strong> 你对关系中的变化非常敏感，容易捕捉到细微的情绪波动。</p>';
+    else if(scores.obsession>=8) analysis+='<p><strong>敏感程度:</strong> 你对关系有一定感知，但不会过度反应。</p>';
+    else analysis+='<p><strong>敏感程度:</strong> 你在关系中比较理性，不会过度敏感。</p>';
+    if(scores.anxiety>=12) analysis+='<p><strong>不安频率:</strong> 经常感到焦虑，需要频繁确认关系状态。</p>';
+    else if(scores.anxiety>=6) analysis+='<p><strong>不安频率:</strong> 偶尔会不安，但整体还能控制。</p>';
+    else analysis+='<p><strong>不安频率:</strong> 情绪比较稳定，不太会因为关系患得患失。</p>';
+    if(scores.dependence>=10) analysis+='<p><strong>牺牲指数:</strong> 你会在关系中放下自己的需求，去迁就对方。</p>';
+    else if(scores.dependence>=5) analysis+='<p><strong>牺牲指数:</strong> 偶尔会妥协，但大多数时候还能坚持自己。</p>';
+    else analysis+='<p><strong>牺牲指数:</strong> 你能坚持自己的底线，不会为了迁就而失去自我。</p>';
+    if(scores.rational>=6) analysis+='<p><strong>内耗影响:</strong> 关系占据了你的大部分精力，影响了生活其他方面。</p>';
+    else analysis+='<p><strong>内耗影响:</strong> 你能把控好关系的度，不会让它严重影响到日常工作学习。</p>';
     document.getElementById('mainAnalysis').innerHTML=analysis;
     renderDimensionChart('miniChart');
     if(totalQuestions>=22) document.getElementById('locked-section').classList.add('show');
@@ -120,19 +120,19 @@ function getLevelByScore(score) {
 }
 
 const brainLevels = {
-    high: {name:'高敏依赖型', emoji:'🚨', desc:'在亲密关系中表现出较高频次的情绪波动与确认性行为。', color:'#FF6B6B'},
-    medium: {name:'中度波动型', emoji:'💞', desc:'在亲密关系中有中等频次的情绪反应与确认行为。', color:'#FFB74D'},
-    low: {name:'边界稳定型', emoji:'🌿', desc:'在亲密关系中能兼顾投入与边界，情绪相对稳定。', color:'#81C784'}
+    high: {name:'焦虑型依恋', emoji:'💭', desc:'在亲密关系中表现出较高频次的情绪波动与确认性行为。', color:'#FF6B6B'},
+    medium: {name:'波动型依恋', emoji:'🌊', desc:'在亲密关系中有中等频次的情绪反应与确认行为。', color:'#FFB74D'},
+    low: {name:'安全型依恋', emoji:'🧡', desc:'在亲密关系中能兼顾投入与边界，情绪相对稳定。', color:'#81C784'}
 };
 
 function renderDimensionChart(targetId){
     const el = document.getElementById(targetId);
     if(!el) return;
     const dims = [
-        {name:'关系警觉', key:'obsession', max:24, cls:'c1'},
-        {name:'依赖确认', key:'anxiety', max:18, cls:'c2'},
-        {name:'边界弹性', key:'dependence', max:15, cls:'c3'},
-        {name:'功能受损', key:'rational', max:9, cls:'c4'}
+        {name:'敏感程度', key:'obsession', max:24, cls:'c1'},
+        {name:'不安频率', key:'anxiety', max:18, cls:'c2'},
+        {name:'牺牲指数', key:'dependence', max:15, cls:'c3'},
+        {name:'内耗影响', key:'rational', max:9, cls:'c4'}
     ];
     const html = dims.map(d=>{
         const v = Math.round((scores[d.key]/d.max)*100);
