@@ -144,20 +144,31 @@ function renderDimensionChart(targetId){
 function generateDeepAnalysis(score,type) {
     let reason='', risk='', advice='', psycho='';
     if(score>=65) {
-        reason='<strong>核心表现：</strong><p>你在关系里会更容易被互动细节触发，确认行为偏高，情绪恢复速度依赖对方回应。</p>';
-        risk='<strong>风险提醒：</strong><p>容易出现时间失焦、情绪内耗、沟通失真（明明想表达需求，最后变成试探或讨好）。</p>';
-        advice='<strong>调整建议：</strong><p>先做“延迟回应 + 事实记录”双动作：先停10分钟，再把事实和脑补分开写，最后再发消息。</p>';
-        psycho='<strong>心理机制：</strong><p>高警觉模式会放大不确定性。你需要的不是压抑情绪，而是建立更稳定的内部确认系统。</p>';
+        reason='<strong>核心表现：</strong><p>你在亲密关系里对不确定信号非常敏感，互动中的细微变化（回复速度、语气转变、沟通频率）都会被你迅速感知并放大。你并不是不讲道理，而是关系安全系统长期处于高警觉状态，这会让你在“确认关系是否稳定”上投入大量精力。</p><p>这种状态下，你容易出现反复确认、过度解读、情绪拉扯和持续反刍。短期看，这些动作能降低焦虑；长期看，会提升内耗，形成“越确认越不安”的循环。</p>';
+        risk='<strong>风险提醒：</strong><p><b>短期：</b>注意力被关系牵引，学习/工作效率下降，睡眠质量波动，情绪恢复速度变慢。</p><p><b>中期：</b>沟通结构容易失真——你真正想表达“需求”，最后可能变成“试探、解释或指责”，双方都累。</p><p><b>长期：</b>自我价值感与关系稳定感绑定过深，一旦关系波动，就会引发明显自我否定。</p>';
+        advice='<div class="advice-item"><div class="advice-icon">①</div><div class="advice-text"><div class="advice-title">10分钟缓冲规则</div><div class="advice-desc">触发后先暂停10分钟再回复，避免在情绪峰值做关系决策。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">②</div><div class="advice-text"><div class="advice-title">事实-脑补分离</div><div class="advice-desc">写下“事实发生了什么 / 我脑补了什么 / 还有哪些可能解释”。每天1次，连续7天。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">③</div><div class="advice-text"><div class="advice-title">需求直说模板</div><div class="advice-desc">把“你为什么...”改成“我希望...”。把隐性期待改成可执行请求。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">④</div><div class="advice-text"><div class="advice-title">建立关系外稳定源</div><div class="advice-desc">每周固定安排运动、社交、个人目标，减少单一情绪依赖。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">⑤</div><div class="advice-text"><div class="advice-title">每周15分钟复盘</div><div class="advice-desc">复盘触发点、有效沟通与下周一个改动，持续降低内耗。</div></div></div>';
+        psycho='<strong>心理机制说明：</strong><p>从依恋理论看，这更接近“高警觉互动模式”。重点不是压抑敏感，而是把敏感转化为可管理信息：先识别触发，再转换表达，再建立稳定节奏。</p><p>你的关键能力不是“完全不焦虑”，而是“焦虑出现时仍保有选择权”。当自动反应被流程化替代，关系质量会明显提升。</p>';
     } else if(score>=40) {
-        reason='<strong>核心表现：</strong><p>你有一定情绪波动，但仍保留边界感。触发时会不安，但多数情况下能拉回理性。</p>';
-        risk='<strong>风险提醒：</strong><p>若长期不表达真实需求，关系会进入“表面平稳、内里消耗”的状态。</p>';
-        advice='<strong>调整建议：</strong><p>每周做一次关系复盘：本周触发点、真实需求、下周一个可执行动作。</p>';
-        psycho='<strong>心理机制：</strong><p>你处在可优化区间，关键是把“自动反应”改成“有意识选择”。</p>';
+        reason='<strong>核心表现：</strong><p>你处在“中度波动区”：会被关系触发，但整体仍有拉回理性的能力。你并非持续失控，而是在特定场景（冷淡、延迟回复、冲突后沉默）更容易内耗。</p><p>你的优势是有觉察，问题主要在执行稳定性——知道该做什么，但触发时容易回到旧模式。</p>';
+        risk='<strong>风险提醒：</strong><p><b>短期：</b>小误解若不及时清理，容易反复积压。</p><p><b>中期：</b>边界模糊，关键议题上让步过度，出现委屈但不表达。</p><p><b>长期：</b>可修复问题被拖成结构性矛盾，关系满意度下降。</p>';
+        advice='<div class="advice-item"><div class="advice-icon">①</div><div class="advice-text"><div class="advice-title">每周触发复盘</div><div class="advice-desc">记录本周最强触发点、当时反应、替代动作，下周只改一个点。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">②</div><div class="advice-text"><div class="advice-title">边界清单</div><div class="advice-desc">列出“可让步/不可让步”各3条，沟通按清单说，减少临场摇摆。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">③</div><div class="advice-text"><div class="advice-title">低冲突表达</div><div class="advice-desc">使用“事实-感受-请求”三步，降低误解与防御。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">④</div><div class="advice-text"><div class="advice-title">延迟确认训练</div><div class="advice-desc">将“立刻要回应”逐步拉长到30分钟，训练自稳能力。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">⑤</div><div class="advice-text"><div class="advice-title">月度关系体检</div><div class="advice-desc">每月一次对齐期待、节奏和边界，防止问题累积。</div></div></div>';
+        psycho='<strong>心理机制说明：</strong><p>你在可塑性最强区间，最有效的路径不是大改，而是持续小改。把冲动反应替换为可重复动作，波动会明显下降。</p>';
     } else {
-        reason='<strong>核心表现：</strong><p>你整体较稳定，能兼顾投入与边界，不容易被短期波动牵走。</p>';
-        risk='<strong>风险提醒：</strong><p>注意别把稳定变成压抑，保持真实表达，关系会更有质量。</p>';
-        advice='<strong>调整建议：</strong><p>继续维持节奏，并定期做低冲突沟通（事实-感受-请求）来增强亲密质量。</p>';
-        psycho='<strong>心理机制：</strong><p>你更接近安全型互动方式，核心任务是稳定输出而非过度控制。</p>';
+        reason='<strong>核心表现：</strong><p>你整体较稳定，能在投入关系同时保持边界，不容易被短期波动牵走。这是高质量关系的良好基础。</p><p>你的重点不在“更稳定”，而在“更有温度的稳定”：提升表达质量与连接深度。</p>';
+        risk='<strong>风险提醒：</strong><p><b>潜在风险：</b>过度理性或表达偏少，会出现“有秩序但不亲密”。</p><p><b>常见盲点：</b>默认对方“应该懂”，导致需求表达不足。</p>';
+        advice='<div class="advice-item"><div class="advice-icon">①</div><div class="advice-text"><div class="advice-title">维持稳定节奏</div><div class="advice-desc">继续保持作息、社交和个人计划，不把关系作为唯一情绪来源。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">②</div><div class="advice-text"><div class="advice-title">提高正向表达频率</div><div class="advice-desc">每周至少2次明确表达感谢、欣赏与需求。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">③</div><div class="advice-text"><div class="advice-title">冲突后24小时复盘</div><div class="advice-desc">复盘事实、感受、改进动作，不做人身归因。</div></div></div>' +
+               '<div class="advice-item"><div class="advice-icon">④</div><div class="advice-text"><div class="advice-title">边界双向更新</div><div class="advice-desc">每月更新边界与期待，确保双方都被看见。</div></div></div>';
+        psycho='<strong>心理机制说明：</strong><p>你更接近安全型互动。继续稳定输出并增加高质量沟通，关系会在“稳”的基础上更“近”。</p>';
     }
     return {reason,risk,advice,psycho};
 }
@@ -187,3 +198,4 @@ function restart() {
     document.querySelector('.home').style.display='block';
     document.getElementById('locked-section').classList.remove('show');
 }
+
