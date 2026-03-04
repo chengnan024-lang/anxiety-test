@@ -151,7 +151,7 @@ function generateDeepAnalysis(score,type) {
                '<div class="advice-item"><div class="advice-icon">③</div><div class="advice-text"><div class="advice-title">需求直说模板</div><div class="advice-desc">把“你为什么...”改成“我希望...”。把隐性期待改成可执行请求。</div></div></div>' +
                '<div class="advice-item"><div class="advice-icon">④</div><div class="advice-text"><div class="advice-title">建立关系外稳定源</div><div class="advice-desc">每周固定安排运动、社交、个人目标，减少单一情绪依赖。</div></div></div>' +
                '<div class="advice-item"><div class="advice-icon">⑤</div><div class="advice-text"><div class="advice-title">每周15分钟复盘</div><div class="advice-desc">复盘触发点、有效沟通与下周一个改动，持续降低内耗。</div></div></div>';
-        psycho='<strong>心理机制说明：</strong><p>从依恋理论看，这更接近“高警觉互动模式”。重点不是压抑敏感，而是把敏感转化为可管理信息：先识别触发，再转换表达，再建立稳定节奏。</p><p>你的关键能力不是“完全不焦虑”，而是“焦虑出现时仍保有选择权”。当自动反应被流程化替代，关系质量会明显提升。</p>';
+        psycho='<strong>心理机制说明：</strong><p>从依恋理论看，这更接近“高警觉互动模式”。重点不是压抑敏感，而是把敏感转化为可管理信息：先识别触发，再转换表达，再建立稳定节奏。</p><p>你的关键能力不是“完全不焦虑”，而是“焦虑出现时仍保有选择权”。当自动反应被流程化替代，关系质量会明显提升。</p><p><b>7天微计划：</b>第1-2天只做情绪缓冲；第3-4天做事实/脑补分离；第5-7天练习需求直说。按这个顺序走，通常会更稳。</p>';
     } else if(score>=40) {
         reason='<strong>核心表现：</strong><p>你处在“中度波动区”：会被关系触发，但整体仍有拉回理性的能力。你并非持续失控，而是在特定场景（冷淡、延迟回复、冲突后沉默）更容易内耗。</p><p>你的优势是有觉察，问题主要在执行稳定性——知道该做什么，但触发时容易回到旧模式。</p>';
         risk='<strong>风险提醒：</strong><p><b>短期：</b>小误解若不及时清理，容易反复积压。</p><p><b>中期：</b>边界模糊，关键议题上让步过度，出现委屈但不表达。</p><p><b>长期：</b>可修复问题被拖成结构性矛盾，关系满意度下降。</p>';
@@ -160,7 +160,7 @@ function generateDeepAnalysis(score,type) {
                '<div class="advice-item"><div class="advice-icon">③</div><div class="advice-text"><div class="advice-title">低冲突表达</div><div class="advice-desc">使用“事实-感受-请求”三步，降低误解与防御。</div></div></div>' +
                '<div class="advice-item"><div class="advice-icon">④</div><div class="advice-text"><div class="advice-title">延迟确认训练</div><div class="advice-desc">将“立刻要回应”逐步拉长到30分钟，训练自稳能力。</div></div></div>' +
                '<div class="advice-item"><div class="advice-icon">⑤</div><div class="advice-text"><div class="advice-title">月度关系体检</div><div class="advice-desc">每月一次对齐期待、节奏和边界，防止问题累积。</div></div></div>';
-        psycho='<strong>心理机制说明：</strong><p>你在可塑性最强区间，最有效的路径不是大改，而是持续小改。把冲动反应替换为可重复动作，波动会明显下降。</p>';
+        psycho='<strong>心理机制说明：</strong><p>你在可塑性最强区间，最有效的路径不是大改，而是持续小改。把冲动反应替换为可重复动作，波动会明显下降。</p><p><b>执行建议：</b>每周固定一个“只改一个点”的主题（如延迟回复、边界表达、冲突复盘），连续四周比一次性大改更有效。</p>';
     } else {
         reason='<strong>核心表现：</strong><p>你整体较稳定，能在投入关系同时保持边界，不容易被短期波动牵走。这是高质量关系的良好基础。</p><p>你的重点不在“更稳定”，而在“更有温度的稳定”：提升表达质量与连接深度。</p>';
         risk='<strong>风险提醒：</strong><p><b>潜在风险：</b>过度理性或表达偏少，会出现“有秩序但不亲密”。</p><p><b>常见盲点：</b>默认对方“应该懂”，导致需求表达不足。</p>';
@@ -168,7 +168,7 @@ function generateDeepAnalysis(score,type) {
                '<div class="advice-item"><div class="advice-icon">②</div><div class="advice-text"><div class="advice-title">提高正向表达频率</div><div class="advice-desc">每周至少2次明确表达感谢、欣赏与需求。</div></div></div>' +
                '<div class="advice-item"><div class="advice-icon">③</div><div class="advice-text"><div class="advice-title">冲突后24小时复盘</div><div class="advice-desc">复盘事实、感受、改进动作，不做人身归因。</div></div></div>' +
                '<div class="advice-item"><div class="advice-icon">④</div><div class="advice-text"><div class="advice-title">边界双向更新</div><div class="advice-desc">每月更新边界与期待，确保双方都被看见。</div></div></div>';
-        psycho='<strong>心理机制说明：</strong><p>你更接近安全型互动。继续稳定输出并增加高质量沟通，关系会在“稳”的基础上更“近”。</p>';
+        psycho='<strong>心理机制说明：</strong><p>你更接近安全型互动。继续稳定输出并增加高质量沟通，关系会在“稳”的基础上更“近”。</p><p><b>进阶建议：</b>在稳定基础上加入“主动表达与共同成长”议题，关系会从“少冲突”升级到“高连接”。</p>';
     }
     return {reason,risk,advice,psycho};
 }
