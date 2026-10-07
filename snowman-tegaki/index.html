@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>雪人 · 手书</title>
+<meta name="description" content="一部用代码一笔一笔画出来的手书：雪人站在你家门前，等了一整个冬天。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Long+Cang&family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0d0f18;
+    --panel: rgba(20, 23, 38, 0.82);
+    --panel-line: rgba(255, 255, 255, 0.1);
+    --text: #f3efe6;
+    --muted: #a9a6bd;
+    --accent: #e0544c;
+    --warm: #f7c873;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; }
+  #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  #cv { width: min(100vw, calc(100vh * 16 / 9)); height: auto; aspect-ratio: 16 / 9; display: block;
+    background: #f4efe4; box-shadow: 0 10px 60px rgba(0,0,0,.5); }
+  body.full #cv, body.recording #cv { box-shadow: none; }
+  body.idle, body.idle * { cursor: none !important; }
+
+  /* ---------- 开场 ---------- */
+  #start { position: fixed; inset: 0; z-index: 20; display: flex; align-items: center; justify-content: center;
+    padding: 16px; background: radial-gradient(ellipse at 50% 30%, #26304f 0%, #0d0f18 70%); }
+  body.started #start { display: none; }
+  .card { width: min(560px, 100%); text-align: center; }
+  .card h1 { font-family: "Ma Shan Zheng", "Long Cang", KaiTi, serif; font-weight: normal; font-size: clamp(64px, 16vw, 120px);
+    margin: 0; letter-spacing: .08em; line-height: 1.1; }
+  .card h1 small { display: block; font-family: "Long Cang", KaiTi, cursive; font-size: .32em; color: var(--warm); letter-spacing: .3em; margin-top: 4px; }
+  .card p { color: var(--muted); line-height: 1.8; font-size: 15px; margin: 18px 0 26px; }
+  .btn { display: block; width: 100%; padding: 15px 18px; margin: 10px 0; border-radius: 14px; border: 1px solid var(--panel-line);
+    background: rgba(255,255,255,.06); color: var(--text); font-size: 16px; cursor: pointer; font-family: inherit; }
+  .btn:hover { background: rgba(255,255,255,.12); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); font-weight: 700; }
+  .btn.primary:hover { background: #ea6058; }
+  .hint { font-size: 13px; color: var(--muted); margin-top: 16px; line-height: 1.7; }
+  body.hasSong .needSong { display: none; }
+  .onlySong { display: none; }
+  body.hasSong .onlySong { display: block; }
+
+  /* ---------- 播放条 ---------- */
+  #hud { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; padding: 10px 16px calc(12px + env(safe-area-inset-bottom));
+    background: linear-gradient(transparent, rgba(8,10,18,.85) 40%); transition: opacity .35s; }
+  #top { position: fixed; left: 0; right: 0; top: 0; z-index: 10; padding: 12px 16px; display: flex; gap: 10px; align-items: center;
+    justify-content: space-between; background: linear-gradient(rgba(8,10,18,.7), transparent); transition: opacity .35s; pointer-events: none; }
+  #top > * { pointer-events: auto; }
+  body:not(.started) #hud, body:not(.started) #top, body.idle #hud, body.idle #top, body.nohud #hud, body.nohud #top,
+  body.recording #hud, body.recording #top { opacity: 0; pointer-events: none; }
+  body.recording #top * , body.recording #hud * { pointer-events: none; }
+  #sceneName { font-family: "Long Cang", KaiTi, cursive; font-size: 24px; text-shadow: 0 1px 6px rgba(0,0,0,.6); }
+  .row { display: flex; align-items: center; gap: 10px; }
+  #btnPlay { width: 46px; height: 46px; border-radius: 50%; border: none; background: var(--text); color: #151826; font-size: 16px; cursor: pointer; flex: none; }
+  #time { font-variant-numeric: tabular-nums; font-size: 13px; color: var(--muted); min-width: 104px; flex: none; }
+  #bar { position: relative; flex: 1; height: 26px; cursor: pointer; touch-action: none; }
+  .segm { position: absolute; top: 9px; height: 8px; background: rgba(255,255,255,.22); border-right: 2px solid rgba(8,10,18,.9); }
+  .segm.alt { background: rgba(255,255,255,.34); }
+  #head { position: absolute; top: 3px; width: 3px; height: 20px; margin-left: -1px; background: var(--accent); border-radius: 2px; box-shadow: 0 0 8px var(--accent); }
+  .tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .chip { border: 1px solid var(--panel-line); background: rgba(255,255,255,.07); color: var(--text); border-radius: 999px;
+    padding: 7px 13px; font-size: 13px; cursor: pointer; font-family: inherit; }
+  .chip:hover { background: rgba(255,255,255,.15); }
+  .chip.rec { color: #ffb3ae; }
+  .mark-only { display: none; }
+  body.markmode .mark-only { display: inline-block; }
+  body.markmode #btnMark { background: var(--accent); border-color: var(--accent); }
+  #btnMarkHere { background: var(--warm); color: #2b2838; border-color: var(--warm); font-weight: 700; }
+
+  #toast { position: fixed; left: 50%; top: 64px; transform: translate(-50%, -10px); z-index: 30; background: var(--panel);
+    border: 1px solid var(--panel-line); padding: 10px 16px; border-radius: 12px; font-size: 14px; opacity: 0; transition: .25s;
+    pointer-events: none; max-width: calc(100vw - 32px); text-align: center; backdrop-filter: blur(6px); }
+  #toast.show { opacity: 1; transform: translate(-50%, 0); }
+  body.recording #toast { display: none; }
+
+  #help { position: fixed; inset: 0; z-index: 40; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(5,6,12,.6); }
+  body.help #help { display: flex; }
+  #help .panel { width: min(620px, 100%); max-height: calc(100vh - 32px); overflow: auto; background: #171a2b; border: 1px solid var(--panel-line);
+    border-radius: 16px; padding: 20px 22px; line-height: 1.75; font-size: 14px; }
+  #help h2 { margin: 0 0 6px; font-family: "Long Cang", KaiTi, cursive; font-weight: normal; font-size: 30px; }
+  #help h3 { margin: 14px 0 4px; font-size: 15px; color: var(--warm); }
+  #help kbd { display: inline-block; min-width: 22px; text-align: center; padding: 1px 6px; border-radius: 5px; background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.18); font-family: inherit; font-size: 12px; }
+  #help p { margin: 4px 0; color: #d7d4e6; }
+  @media (max-width: 640px) {
+    #time { min-width: 0; font-size: 12px; }
+    .chip { padding: 6px 11px; font-size: 12px; }
+    #sceneName { font-size: 20px; }
+    .desk { display: none; }
+  }
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="cv" width="1920" height="1080"></canvas></div>
+
+<div id="start">
+  <div class="card">
+    <h1>雪人<small>手 书 · tegaki</small></h1>
+    <p>一个雪人站在你家门前，等了一整个冬天。<br />选一首你手机/电脑里的《雪人》，它就会跟着歌一帧一帧画出来。</p>
+    <button class="btn primary needSong" id="startAudio">选择《雪人》音乐文件</button>
+    <button class="btn primary onlySong" id="startPreview2" onclick="document.getElementById('startPreview').click()">开始播放</button>
+    <button class="btn" id="startLrc">导入 LRC 歌词（可选）</button>
+    <button class="btn needSong" id="startPreview">先不放音乐，直接看</button>
+    <div class="hint">音乐和歌词只在你自己的浏览器里播放，不会上传到任何地方。<br />电脑上可以直接把 mp3 / lrc 文件拖进这个页面。按 <b>?</b> 看快捷键。</div>
+  </div>
+</div>
+
+<div id="top">
+  <div id="sceneName"></div>
+  <div class="row">
+    <button class="chip" id="btnHelp">? 帮助</button>
+  </div>
+</div>
+
+<div id="hud">
+  <div class="row">
+    <button id="btnPlay" aria-label="播放/暂停">▶</button>
+    <div id="time">0:00.0 / 0:00.0</div>
+    <div id="bar"><div id="head"></div></div>
+  </div>
+  <div class="tools">
+    <button class="chip" id="btnAudio">♪ 换音乐</button>
+    <button class="chip" id="btnLrc">词 歌词</button>
+    <button class="chip" id="btnMark">✎ 对拍打点</button>
+    <button class="chip mark-only" id="btnMarkHere">打点（K）</button>
+    <button class="chip mark-only" id="btnUndo">撤销（U）</button>
+    <button class="chip mark-only" id="btnExport">导出时间轴</button>
+    <button class="chip mark-only" id="btnImport">导入时间轴</button>
+    <button class="chip mark-only" id="btnReset">恢复默认</button>
+    <button class="chip rec desk" id="btnRec">● 录制视频</button>
+    <button class="chip" id="btnFull">⛶ 全屏</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<div id="help">
+  <div class="panel">
+    <h2>怎么玩</h2>
+    <h3>1 · 放歌</h3>
+    <p>点「换音乐」选你的《雪人》mp3（或者直接拖进页面）。没有音乐也能看，默认按 4 分半的长度播放。</p>
+    <h3>2 · 歌词（可选）</h3>
+    <p>导入一个 .lrc 歌词文件，歌词会用手写字一字一字写出来；导入歌词后，场景还会自动按前奏 / 间奏 / 尾声对齐。</p>
+    <h3>3 · 对拍打点（让画面卡准你的版本）</h3>
+    <p>点「对拍打点」，从头播放，听到该换下一幕的时候按 <kbd>K</kbd>（手机上点「打点」）。一共 14 幕，听一遍按 13 下就好。
+      按错了按 <kbd>U</kbd> 撤销，<kbd>[</kbd> <kbd>]</kbd> 把当前这一幕的起点前后挪 0.1 秒（按住 Shift 挪 1 秒）。打点会自动保存在这个浏览器里。</p>
+    <h3>4 · 导出视频</h3>
+    <p>电脑上用 Chrome / Edge 点「录制视频」（或按 <kbd>R</kbd>），它会从头完整播放一遍并录下来，播完自动下载。录的时候别切走这个标签页。</p>
+    <h3>快捷键</h3>
+    <p><kbd>空格</kbd> 播放/暂停 · <kbd>←</kbd><kbd>→</kbd> 快退/快进 5 秒 · <kbd>↑</kbd><kbd>↓</kbd> 上一幕/下一幕 · <kbd>K</kbd> 打点 · <kbd>U</kbd> 撤销 ·
+      <kbd>E</kbd> 导出时间轴 · <kbd>B</kbd> 跟着敲拍子（敲 4 下以上） · <kbd>R</kbd> 录制 · <kbd>F</kbd> 全屏 · <kbd>H</kbd> 隐藏界面</p>
+    <button class="btn" id="helpClose" style="margin-top:16px">知道了</button>
+  </div>
+</div>
+
+<input type="file" id="fAudio" accept="audio/*,.mp3,.m4a,.flac,.wav,.ogg" hidden />
+<input type="file" id="fLrc" accept=".lrc,.txt,text/plain" hidden />
+<input type="file" id="fTimeline" accept=".json,application/json" hidden />
+
+<script src="js/engine.js"></script>
+<script src="js/characters.js"></script>
+<script src="scenes/01-intro.js"></script>
+<script src="scenes/02-cold.js"></script>
+<script src="scenes/03-christmas.js"></script>
+<script src="scenes/04-waiting.js"></script>
+<script src="scenes/05-pieces.js"></script>
+<script src="scenes/06-touch.js"></script>
+<script src="scenes/07-sky.js"></script>
+<script src="scenes/08-spring.js"></script>
+<script src="scenes/09-memory.js"></script>
+<script src="scenes/10-doorstep.js"></script>
+<script src="scenes/11-dream.js"></script>
+<script src="scenes/12-flash.js"></script>
+<script src="scenes/13-melt.js"></script>
+<script src="scenes/14-fin.js"></script>
+<script src="js/timeline.js"></script>
+</body>
+</html>
