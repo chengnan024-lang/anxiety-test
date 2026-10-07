@@ -1081,6 +1081,7 @@
     if (navigator.clipboard) navigator.clipboard.writeText(txt).catch(() => {});
     toast('时间轴已导出（也复制到了剪贴板）');
   }
+  TG.importTimeline = (text) => importTimeline(text);
   function importTimeline(text) {
     try {
       const j = JSON.parse(text);
