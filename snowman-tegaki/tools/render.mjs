@@ -14,6 +14,7 @@
  *   --from/--to 只导出一段（秒）
  *   --width     输出宽度，默认 1920（高度按 16:9）
  *   --fps       动画帧率，默认 12（视频本身按 24fps 封装）
+ *   --crf       画质（越小越好越大），默认 18
  */
 import { createRequire } from 'node:module';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -66,7 +67,7 @@ await page.waitForTimeout(800);
 
 const ffArgs = ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-i', '-'];
 if (audio) ffArgs.push('-ss', String(from), '-t', String(to - from), '-i', audio);
-ffArgs.push('-vf', `fps=24,format=yuv420p`, '-c:v', 'libx264', '-preset', 'medium', '-crf', '18', '-movflags', '+faststart');
+ffArgs.push('-vf', `fps=24,format=yuv420p`, '-c:v', 'libx264', '-preset', 'medium', '-crf', String(get('crf', 18)), '-movflags', '+faststart');
 if (audio) ffArgs.push('-c:a', 'aac', '-b:a', '192k', '-shortest');
 ffArgs.push(out);
 const ff = spawn('ffmpeg', ffArgs, { stdio: ['pipe', 'inherit', 'inherit'] });

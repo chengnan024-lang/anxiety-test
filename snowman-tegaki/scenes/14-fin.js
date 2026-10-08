@@ -2,7 +2,7 @@
  *
  * 镜头（按 p 分段）：
  *   S1 0.00–0.18  俯视水坑：水里倒映着春天的天空和云，一滴水"嗒"地荡开涟漪，
- *                 雪人淡淡的白色轮廓一笔一笔浮出来（他在笑）。左上角手写「3.20 晴 · 第 110 天」
+ *                 雪人淡淡的白色轮廓一笔一笔浮出来（他在笑）。左上角手写「3.21 晴 · 第 111 天」
  *   S2 0.18–0.42  俯视近景：一个影子遮过来，水里映出"你"低头的剪影 → 倒影里的雪人抬头、挥手 →
  *                 红手套从画外伸进来，犹豫一下，捏住围巾一角，把湿漉漉的围巾提起来带出画面（嗒、嗒）
  *   S3 0.42–0.52  胸口特写：两只红手套把湿围巾抱在怀里，水珠往下滴，一颗小小的心浮起来。「带你回家。」
@@ -14,7 +14,7 @@
  */
 (function () {
   'use strict';
-  const { clamp, lerp, seg, ease, rand, rgba, catmull } = TG.U;
+  const { clamp, lerp, seg, ease, rand, rgba, catmull, mix } = TG.U;
   const P = TG.PAL, C = TG.C, W = TG.W, H = TG.H;
   const TAU = Math.PI * 2;
 
@@ -837,7 +837,7 @@
     // 手写：日期
     if (!s2) {
       const kd = seg(u1, 0.06, 0.32);
-      g.text('3.20', 196, 118, { font: 'latin', size: 92, color: P.ink, progress: kd, seed: 11 });
+      g.text('3.21', 196, 118, { font: 'latin', size: 92, color: P.ink, progress: kd, seed: 11 });
       g.text('晴', 330, 124, { size: 74, color: P.ink, progress: seg(u1, 0.28, 0.4), seed: 12 });
       // 小太阳
       const ks = seg(u1, 0.38, 0.6);
@@ -1005,7 +1005,7 @@
     // 被夕阳照着的云（镜头往上升的时候从旁边滑过）
     [[330, -120, 1.1, '#f1b9b0', 0.8, '#ffe2c4'], [1540, -380, 0.9, '#c99db8', 0.75, '#f5c6c0'], [560, -660, 1.25, '#8f86b8', 0.7, '#c6b0d4'], [1380, -1000, 0.8, '#5f6299', 0.65, '#9c9cc8']].forEach(([x, y, cs, col, ca, lit], k) => {
       const cx = x + t * 7 + Math.sin(t * 0.15 + k) * 20;
-      puffCloud(g, cx, y, 330 * cs, 110 * cs, col, ca, 120 + k * 3, { lit });
+      puffCloud(g, cx, y, 330 * cs, col, ca, 120 + k * 3, { lit });
     });
     // 远山
     const hill = (y0, amp, seed, fill, line) => {
@@ -1315,7 +1315,7 @@
     g.text('Fin', 960, 772, { font: 'latin', size: 96, color: P.warm, progress: kf, seed: 192 });
     g.line(810, 782, 896, 778, { color: rgba(P.warm, 0.8), width: 3, progress: ease.out(seg(u, 0.47, 0.54)), seed: 193 });
     g.line(1110, 778, 1024, 782, { color: rgba(P.warm, 0.8), width: 3, progress: ease.out(seg(u, 0.47, 0.54)), seed: 194 });
-    g.text('12.01 — 3.20', 960, 846, { font: 'latin', size: 40, color: rgba(MOON, 0.62), progress: seg(u, 0.5, 0.56), seed: 195 });
+    g.text('12.01 — 3.21', 960, 846, { font: 'latin', size: 40, color: rgba(MOON, 0.62), progress: seg(u, 0.5, 0.56), seed: 195 });
     // 印章
     const ks = seg(u, 0.54, 0.57);
     const SX = 1290, SY = 515;

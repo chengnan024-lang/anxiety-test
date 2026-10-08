@@ -59,7 +59,9 @@
     return Math.abs(d) / Math.max(1, dur * 12);
   }
   const dayOf = (tau) => Math.floor(tau) + 1;
-  /** 第 1 天 = 12 月 25 日 */
+  /** 显示用：全片从 12.01 算第 1 天（开场「第 1 天」），这一幕的 day=1 是 12.25，也就是全片第 25 天 */
+  const DAY0 = 24;
+  /** day=1 → 12 月 25 日 */
   function dateOf(day) {
     return day <= 7 ? `12.${24 + day}` : `1.${day - 7}`;
   }
@@ -707,7 +709,7 @@
     ctx.save();
     ctx.translate(152, 66);
     ctx.scale(pop, pop);
-    g.text(String(day), 0, 0, { size: 92, font: 'latin', weight: 700, color: P.ink, pop: false, seed: 812 });
+    g.text(String(day + DAY0), 0, 0, { size: 92, font: 'latin', weight: 700, color: P.ink, pop: false, seed: 812 });
     ctx.restore();
     g.text(dateOf(day), 150, 126, { size: 34, font: 'latin', weight: 700, color: P.inkSoft, pop: false, seed: 813 });
     ctx.restore();
@@ -1181,9 +1183,9 @@
     ctx.save();
     ctx.translate(960, NY - f * step);
     if (k >= 1) ctx.scale(stamp, stamp);
-    g.text(String(cur), 0, 0, { size: 440, font: 'latin', weight: 700, color: P.ink, pop: false, seed: 1250 });
+    g.text(String(cur + DAY0), 0, 0, { size: 440, font: 'latin', weight: 700, color: P.ink, pop: false, seed: 1250 });
     ctx.restore();
-    if (f > 0.001) g.text(String(cur + 1), 960, NY + (1 - f) * step, { size: 440, font: 'latin', weight: 700, color: P.ink, pop: false, seed: 1251 });
+    if (f > 0.001) g.text(String(cur + 1 + DAY0), 960, NY + (1 - f) * step, { size: 440, font: 'latin', weight: 700, color: P.ink, pop: false, seed: 1251 });
     ctx.restore();
     // 日期
     g.text(dateOf(f > 0.5 ? cur + 1 : cur), 960, 150, { size: 64, font: 'latin', weight: 700, color: P.inkSoft, pop: false, seed: 1260 });
