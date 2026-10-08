@@ -688,6 +688,7 @@
   let lastRenderedQ = -1, dirty = true;
   const errorsLogged = new Set();
   const params = new URLSearchParams(location.search);
+  const EMBED = !!window.TG_EMBED; // 作为在线页面嵌入时：不能下载文件、不自动找 song.mp3
 
   TG.scene = function (def) {
     if (!def || !def.id || typeof def.draw !== 'function') throw new Error('TG.scene 需要 {id, draw}');
@@ -953,13 +954,40 @@
   }
 
   // ------------------------------------------------------------------ 时钟 / 音频
+  // 两条路：普通 <audio> 元素；如果浏览器不让它放（比如在受限的嵌入页面里），就用 Web Audio 解码后播放。
   const audio = new Audio();
   audio.preload = 'auto';
   let audioReady = false, audioIsBlob = false;
+  let wa = null; // Web Audio 播放器 {ctx, buf, gain, src, startedAt, offset, playing}
+  let actx = null;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  function waStart(off) {
+    waStop();
+    const src = wa.ctx.createBufferSource();
+    src.buffer = wa.buf;
+    src.connect(wa.gain);
+    src.onended = () => {
+      if (wa && wa.src === src && wa.playing) { wa.playing = false; wa.src = null; wa.offset = duration - 0.01; onEnded(); }
+    };
+    if (wa.ctx.state === 'suspended') wa.ctx.resume();
+    src.start(0, clamp(off, 0, duration - 0.01));
+    wa.startedAt = wa.ctx.currentTime - off;
+    wa.src = src;
+    wa.playing = true;
+  }
+  function waStop() {
+    if (!wa || !wa.src) { if (wa) wa.playing = false; return; }
+    const src = wa.src;
+    wa.src = null;
+    wa.playing = false;
+    src.onended = null;
+    try { src.stop(); } catch (e) { /* 已经停了 */ }
+  }
   const clock = {
     playing: false, base: 0, t0: 0,
     now() {
       if (audioReady) return audio.currentTime;
+      if (wa) return wa.playing ? clamp(wa.ctx.currentTime - wa.startedAt, 0, duration) : wa.offset;
       if (!this.playing) return this.base;
       const t = this.base + (performance.now() - this.t0) / 1000;
       if (t >= duration) { this.base = duration - 0.001; this.playing = false; onEnded(); return this.base; }
@@ -967,18 +995,21 @@
     },
     play() {
       if (audioReady) { const p = audio.play(); if (p && p.catch) p.catch(() => {}); }
+      else if (wa) waStart(wa.offset >= duration - 0.05 ? 0 : wa.offset);
       else { this.t0 = performance.now(); this.playing = true; }
       dirty = true; updatePlayBtn(true);
     },
     pause() {
       if (audioReady) audio.pause();
+      else if (wa) { wa.offset = this.now(); waStop(); }
       else { this.base = this.now(); this.playing = false; }
       dirty = true; updatePlayBtn(false);
     },
-    isPlaying() { return audioReady ? !audio.paused : this.playing; },
+    isPlaying() { return audioReady ? !audio.paused : wa ? wa.playing : this.playing; },
     seek(t) {
       t = clamp(t, 0, duration - 0.01);
       if (audioReady) audio.currentTime = t;
+      else if (wa) { if (wa.playing) waStart(t); else wa.offset = t; }
       else { this.base = t; this.t0 = performance.now(); }
       dirty = true;
     },
@@ -988,26 +1019,66 @@
   audio.addEventListener('play', () => updatePlayBtn(true));
   audio.addEventListener('pause', () => updatePlayBtn(false));
 
+  function songLoaded(name) {
+    clock.playing = false;
+    loadMarks();
+    computeStarts();
+    toast(`音乐已载入：${name || ''}（${fmt(duration)}）`);
+  }
   function loadAudioURL(url, isBlob, name) {
     return new Promise((res) => {
-      const done = (ok) => { audio.removeEventListener('loadedmetadata', onMeta); audio.removeEventListener('error', onErr); res(ok); };
+      let timer = 0;
+      const done = (ok) => {
+        clearTimeout(timer);
+        audio.removeEventListener('loadedmetadata', onMeta);
+        audio.removeEventListener('error', onErr);
+        res(ok);
+      };
       const onMeta = () => {
+        if (wa) { waStop(); wa = null; }
         audioReady = true; audioIsBlob = isBlob;
         duration = audio.duration && isFinite(audio.duration) ? audio.duration : CFG.defaultDuration;
-        clock.playing = false;
-        loadMarks();
-        computeStarts();
-        toast(`音乐已载入：${name || ''}（${fmt(duration)}）`);
+        songLoaded(name);
         done(true);
       };
       const onErr = () => done(false);
       audio.addEventListener('loadedmetadata', onMeta);
       audio.addEventListener('error', onErr);
+      timer = setTimeout(() => done(false), isBlob ? 6000 : 15000);
       audio.src = url;
       audio.load();
     });
   }
-  TG.loadAudioFile = (file) => loadAudioURL(URL.createObjectURL(file), true, file.name);
+  async function loadAudioDecoded(file) {
+    if (!AC) return false;
+    try {
+      toast('正在解码音乐……');
+      actx = actx || new AC();
+      const data = await file.arrayBuffer();
+      const buf = await new Promise((res, rej) => {
+        const pr = actx.decodeAudioData(data, res, rej);
+        if (pr && pr.then) pr.then(res, rej);
+      });
+      if (wa) waStop();
+      audio.pause();
+      audio.removeAttribute('src');
+      audioReady = false;
+      const gain = actx.createGain();
+      gain.connect(actx.destination);
+      wa = { ctx: actx, buf, gain, src: null, startedAt: 0, offset: 0, playing: false };
+      duration = buf.duration;
+      songLoaded(file.name);
+      return true;
+    } catch (e) {
+      console.error('decodeAudioData', e);
+      return false;
+    }
+  }
+  TG.loadAudioFile = async (file) => {
+    if (wa) { waStop(); }
+    if (await loadAudioURL(URL.createObjectURL(file), true, file.name)) return true;
+    return loadAudioDecoded(file);
+  };
 
   TG.loadLyricsText = function (text, name) {
     lyrics = parseLRC(text);
@@ -1077,6 +1148,13 @@
       bpm, beatOffset,
     };
     const txt = JSON.stringify(data, null, 2);
+    if (EMBED) {
+      const ok = () => toast('时间轴已复制到剪贴板');
+      const fail = () => toast('复制失败，请稍后再试');
+      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(ok, fail);
+      else fail();
+      return;
+    }
     download(new Blob([txt], { type: 'application/json' }), 'snowman-timeline.json');
     if (navigator.clipboard) navigator.clipboard.writeText(txt).catch(() => {});
     toast('时间轴已导出（也复制到了剪贴板）');
@@ -1116,20 +1194,23 @@
   }
 
   // ------------------------------------------------------------------ 录制视频
-  let recorder = null, actx = null, mediaSrc = null;
+  let recorder = null, mediaSrc = null;
   async function startRecording() {
     if (recorder) { stopRecording(); return; }
+    if (EMBED) { toast('在线页面不能下载文件。想导出视频，请下载项目后在电脑上用 Chrome 打开'); return; }
     if (!window.MediaRecorder || !canvas.captureStream) { toast('这个浏览器不支持录制，建议用电脑版 Chrome / Edge'); return; }
     if (audioReady && !audioIsBlob && location.protocol === 'file:') {
       toast('录制需要通过「选择音乐」按钮载入 mp3（本地打开时浏览器的安全限制）');
       return;
     }
     const stream = canvas.captureStream(30);
-    if (audioReady) {
-      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-      if (!mediaSrc) { mediaSrc = actx.createMediaElementSource(audio); mediaSrc.connect(actx.destination); }
+    if (audioReady || wa) {
+      actx = actx || new AC();
       const dest = actx.createMediaStreamDestination();
-      mediaSrc.connect(dest);
+      if (audioReady) {
+        if (!mediaSrc) { mediaSrc = actx.createMediaElementSource(audio); mediaSrc.connect(actx.destination); }
+        mediaSrc.connect(dest);
+      } else wa.gain.connect(dest);
       dest.stream.getAudioTracks().forEach((tr) => stream.addTrack(tr));
       if (actx.state === 'suspended') await actx.resume();
     }
@@ -1274,7 +1355,14 @@
     on('btnUndo', undoMark);
     on('btnExport', exportTimeline);
     on('btnImport', () => fT && fT.click());
-    on('btnReset', () => { if (confirm('清空所有打点，恢复默认时间轴？')) { markUndo.push(starts.slice()); TG.setMarks(null); } });
+    let resetArmed = 0;
+    on('btnReset', () => {
+      if (Date.now() - resetArmed > 3000) { resetArmed = Date.now(); toast('再点一次「恢复默认」，清空所有打点'); return; }
+      resetArmed = 0;
+      markUndo.push(starts.slice());
+      TG.setMarks(null);
+      toast('已恢复默认时间轴（按 U 可以撤销）');
+    });
     on('btnHelp', () => document.body.classList.toggle('help'));
     on('helpClose', () => document.body.classList.remove('help'));
     const bar = $('bar');
@@ -1313,7 +1401,12 @@
   }
   function toggleFull() {
     if (document.fullscreenElement) document.exitFullscreen();
-    else (document.documentElement.requestFullscreen || function () {}).call(document.documentElement);
+    else {
+      const r = document.documentElement.requestFullscreen;
+      const pr = r ? r.call(document.documentElement) : null;
+      if (!pr) toast('这里不支持全屏');
+      else pr.catch(() => toast('这里不支持全屏'));
+    }
   }
   function hideStart() { document.body.classList.add('started'); poke(); }
   function onKey(e) {
@@ -1411,7 +1504,8 @@
     fontsBooted = true;
     if (document.fonts) document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', () => (dirty = true));
     // 同目录下放了 song.mp3 / lyrics.lrc 的话自动载入
-    if (!params.get('scene') && !params.get('noauto')) {
+    if (EMBED) document.body.classList.add('embed');
+    if (!params.get('scene') && !params.get('noauto') && !EMBED) {
       loadAudioURL('song.mp3', false, 'song.mp3').then((ok) => ok && document.body.classList.add('hasSong'));
       fetch('lyrics.lrc').then((r) => (r.ok ? r.text() : null)).then((t) => t && TG.loadLyricsText(t, 'lyrics.lrc')).catch(() => {});
     }
